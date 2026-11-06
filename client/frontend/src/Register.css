@@ -1,0 +1,105 @@
+
+.registerScreen {
+    min-height: 100vh;
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 100px 0 30px;
+    box-sizing: border-box;
+}
+
+.registerCo {
+    width: min(460px, calc(100% - 40px));
+    padding: 36px;
+    box-sizing: border-box;
+    background: #0000;
+    border: 1px solid #303849;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.3);
+}
+
+.registerHeading {
+    position: absolute;
+    top: 28px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-size: 34px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.registerWindowHeading {
+    text-align: center;
+    font-size: 26px;
+    margin: 0 0 10px;
+}
+
+.registerSubtitle {
+    text-align: center;
+    font-size: 15px;
+    color: #94A3B8;
+    margin-bottom: 30px;
+}
+
+.registerInputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 20px;
+}
+
+.registerInputGroup label {
+    text-align: left;
+    font-size: 14px;
+    color: #94A3B8;
+}
+
+.registerCo input,
+.registerCo select {
+    width: 100%;
+    height: 46px;
+    padding: 0 14px;
+    box-sizing: border-box;
+    background: #1D2331;
+    color: #F1F5F9;
+    border: 1px solid #303849;
+    border-radius: 8px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+.registerCo input:focus,
+.registerCo select:focus {
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139,92,246,0.15);
+}
+
+.registerButton {
+    width: 100%;
+    height: 46px;
+    margin-top: 8px;
+    background: #8B5CF6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.registerButton:hover {
+    background: #7C3AED;
+    transform: translateY(-2px);
+}
+
+@media (max-width: 500px) {
+    .registerCo {
+        padding: 28px 24px;
+    }
+
+    .registerHeading {
+        font-size: 28px;
+    }
+}
