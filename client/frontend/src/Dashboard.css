@@ -1,0 +1,118 @@
+.dashboardScreen {
+    min-height: 100vh;
+    width: 100%;
+    background: #0B0D14;
+    color: #F1F5F9;
+    font-family: Inter, sans-serif;
+}
+
+.dashboardHeader {
+    height: 75px;
+    padding: 0 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-bottom: 1px solid #303849;
+    background: #111521;
+}
+
+.dashboardHeader h1 {
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -1px;
+}
+
+.dashboardHeader div {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.dashboardHeader span {
+    color: #94A3B8;
+    font-size: 14px;
+}
+
+.dashboardContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 45px 40px;
+}
+
+.dashboardContent > h2 {
+    font-size: 28px;
+    font-weight: 600;
+    margin-bottom: 8px;
+}
+
+.dashboardContent section {
+    margin-top: 35px;
+}
+
+.dashboardContent section h2 {
+    font-size: 21px;
+    margin-bottom: 24px;
+}
+
+.dashboardScreen button {
+    background: #8B5CF6;
+    color: white;
+    border: none;
+    padding: 13px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+}
+
+.dashboardScreen button:hover {
+    background: #7C3AED;
+    transform: translateY(-2px);
+}
+
+.dashboardHeader button {
+    background: transparent;
+    border: 1px solid #303849;
+    padding: 9px 18px;
+}
+
+.dashboardHeader button:hover {
+    background: #1D2331;
+    border-color: #8B5CF6;
+}
+
+.dashboardContent section {
+    margin-top: 35px;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 18px;
+}
+
+.dashboardContent section h2 {
+    flex-basis: 100%;
+    text-align: center;
+}
+
+@media (max-width: 600px) {
+    .dashboardHeader {
+        padding: 0 20px;
+    }
+
+    .dashboardContent {
+        padding: 30px 20px;
+    }
+
+    .dashboardContent > h2 {
+        font-size: 23px;
+    }
+
+    .dashboardContent section {
+        flex-direction: column;
+    }
+
+    .dashboardContent section button {
+        width: 100%;
+    }
+}

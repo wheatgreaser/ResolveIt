@@ -91,3 +91,14 @@
         font-size: 28px;
     }
 }
+
+.errorMessage {
+    color: #F87171;
+    font-size: 14px;
+    margin-bottom: 15px;
+}
+
+.loginButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
