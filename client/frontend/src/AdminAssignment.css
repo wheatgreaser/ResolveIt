@@ -1,0 +1,470 @@
+
+.assignmentPage {
+    min-height: 100vh;
+    background: #0B0D14;
+    color: #F1F5F9;
+    font-family: Inter, sans-serif;
+}
+
+.assignmentHeader {
+    height: 80px;
+    padding: 0 5%;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    background: #111521;
+    border-bottom: 1px solid #303849;
+}
+
+.assignmentHeader h1 {
+    margin: 0 0 5px;
+    font-size: 25px;
+}
+
+.assignmentHeader span {
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.assignmentHeader button,
+.assignmentTitle button {
+    background: transparent;
+    border: 1px solid #303849;
+    color: #CBD5E1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.assignmentHeader button:hover,
+.assignmentTitle button:hover {
+    border-color: #8B5CF6;
+    color: #C4B5FD;
+}
+
+.assignmentContent {
+    width: 90%;
+    max-width: 1250px;
+    margin: auto;
+    padding: 45px 0;
+}
+
+.assignmentTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 35px;
+}
+
+.assignmentTitle h2 {
+    font-size: 28px;
+    margin: 0 0 10px;
+}
+
+.assignmentTitle p,
+.sectionDescription {
+    color: #94A3B8;
+    font-size: 14px;
+}
+
+.assignmentSection {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 13px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.assignmentSection h3 {
+    margin: 0 0 8px;
+    font-size: 19px;
+}
+
+.strategyGrid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 18px;
+    margin: 25px 0;
+}
+
+.strategyCard {
+    padding: 22px;
+    background: #101521;
+    border: 1px solid #303849;
+    border-radius: 11px;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.strategyCard:hover {
+    border-color: #8B5CF6;
+    transform: translateY(-3px);
+}
+
+.selectedStrategy {
+    border-color: #8B5CF6;
+    background: #211A35;
+    box-shadow: 0 0 0 1px #8B5CF6;
+}
+
+.strategyIcon {
+    color: #A78BFA;
+    font-size: 25px;
+}
+
+.strategyCard h4 {
+    margin: 15px 0 8px;
+    font-size: 16px;
+}
+
+.strategyCard p {
+    color: #94A3B8;
+    font-size: 13px;
+    line-height: 1.6;
+    min-height: 60px;
+}
+
+.strategyTag {
+    color: #A78BFA;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.saveStrategyButton {
+    padding: 12px 20px;
+    background: #8B5CF6;
+    border: none;
+    border-radius: 8px;
+    color: white;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.saveStrategyButton:hover {
+    background: #7C3AED;
+}
+
+.saveStrategyButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.sectionTitleRow {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+}
+
+.sectionCount {
+    color: #A78BFA;
+    background: #29213F;
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 12px;
+}
+
+.technicianGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 18px;
+    margin-top: 25px;
+}
+
+.technicianCard {
+    padding: 20px;
+    background: #101521;
+    border: 1px solid #303849;
+    border-radius: 11px;
+}
+
+.technicianTop {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.technicianAvatar {
+    width: 40px;
+    height: 40px;
+    flex-shrink: 0;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #30234D;
+    color: #C4B5FD;
+    font-weight: 700;
+}
+
+.technicianTop h4 {
+    margin: 0 0 5px;
+    font-size: 14px;
+}
+
+.technicianTop p {
+    margin: 0;
+    color: #94A3B8;
+    font-size: 11px;
+}
+
+.availability {
+    margin-left: auto;
+    font-size: 10px;
+    padding: 5px 8px;
+    border-radius: 20px;
+    white-space: nowrap;
+}
+
+.available {
+    color: #6EE7B7;
+    background: #14382F;
+}
+
+.unavailable {
+    color: #FCA5A5;
+    background: #3A2028;
+}
+
+.workloadInfo {
+    margin-top: 25px;
+}
+
+.workloadInfo > div:first-child {
+    display: flex;
+    justify-content: space-between;
+    font-size: 12px;
+    margin-bottom: 10px;
+    color: #94A3B8;
+}
+
+.workloadInfo strong {
+    color: #F1F5F9;
+}
+
+.workloadBar {
+    height: 7px;
+    background: #303849;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.workloadBar div {
+    height: 100%;
+    background: #8B5CF6;
+    border-radius: 10px;
+}
+
+.experience {
+    font-size: 12px;
+    color: #94A3B8;
+    margin: 17px 0;
+}
+
+.skillList {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 7px;
+}
+
+.skillList span {
+    background: #252D3D;
+    color: #CBD5E1;
+    border-radius: 6px;
+    padding: 6px 9px;
+    font-size: 10px;
+}
+
+.unassignedList {
+    margin-top: 22px;
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+}
+
+.unassignedCard {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 20px;
+    padding: 20px;
+    background: #101521;
+    border: 1px solid #303849;
+    border-radius: 10px;
+}
+
+.incidentReference {
+    color: #A78BFA;
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.incidentInfo h4 {
+    margin: 8px 0;
+    font-size: 15px;
+}
+
+.incidentInfo > p {
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.incidentTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin-top: 12px;
+}
+
+.incidentTags span {
+    font-size: 10px;
+    color: #94A3B8;
+    background: #252D3D;
+    border-radius: 5px;
+    padding: 5px 8px;
+}
+
+.incidentTags .priorityTag {
+    font-weight: 700;
+}
+
+.priorityTag.p1 {
+    color: #FCA5A5;
+    background: #3B2029;
+}
+
+.priorityTag.p2 {
+    color: #FDBA74;
+    background: #3B2D20;
+}
+
+.priorityTag.p3 {
+    color: #FDE68A;
+    background: #38321E;
+}
+
+.priorityTag.p4 {
+    color: #86EFAC;
+    background: #193528;
+}
+
+.assignmentControls {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 9px;
+    min-width: 210px;
+}
+
+.assignmentControls select {
+    width: 100%;
+    padding: 10px;
+    background: #1D2331;
+    border: 1px solid #303849;
+    border-radius: 7px;
+    color: #F1F5F9;
+}
+
+.manualAssignButton,
+.autoAssignButton {
+    padding: 10px 13px;
+    border-radius: 7px;
+    border: none;
+    font-size: 11px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.manualAssignButton {
+    background: #8B5CF6;
+    color: white;
+}
+
+.autoAssignButton {
+    background: #252D3D;
+    color: #CBD5E1;
+    border: 1px solid #475569;
+}
+
+.manualAssignButton:disabled,
+.autoAssignButton:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+.emptyAssignment {
+    padding: 30px;
+    text-align: center;
+    color: #94A3B8;
+}
+
+.assignmentError,
+.assignmentMessage {
+    padding: 13px 16px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    font-size: 13px;
+}
+
+.assignmentError {
+    background: #3B2029;
+    color: #FCA5A5;
+}
+
+.assignmentMessage {
+    background: #14382F;
+    color: #6EE7B7;
+}
+
+.assignmentLoading {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #0B0D14;
+    color: #F1F5F9;
+}
+
+@media (max-width: 850px) {
+    .strategyGrid {
+        grid-template-columns: 1fr;
+    }
+
+    .unassignedCard {
+        align-items: stretch;
+        flex-direction: column;
+    }
+
+    .assignmentControls {
+        justify-content: flex-start;
+    }
+}
+
+@media (max-width: 550px) {
+    .assignmentContent {
+        width: 92%;
+        padding: 25px 0;
+    }
+
+    .assignmentHeader {
+        padding: 0 4%;
+    }
+
+    .assignmentHeader button {
+        padding: 8px;
+        font-size: 11px;
+    }
+
+    .assignmentTitle {
+        align-items: flex-start;
+        gap: 12px;
+    }
+
+    .assignmentTitle h2 {
+        font-size: 22px;
+    }
+
+    .assignmentSection {
+        padding: 17px;
+    }
+}

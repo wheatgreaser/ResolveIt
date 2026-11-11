@@ -10,11 +10,12 @@ app.use(cors({
 
 
 const authRoutes = require('./auth');
+const incidentRoutes = require('./incidents');
 
 app.use(express.json());
 
 app.use('/auth', authRoutes);
-
+app.use('/incidents', incidentRoutes);
 app.listen(8080, () => {
     console.log('Server listening on port 8080');
 });

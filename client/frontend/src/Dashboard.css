@@ -1,118 +1,308 @@
 .dashboardScreen {
     min-height: 100vh;
-    width: 100%;
     background: #0B0D14;
     color: #F1F5F9;
     font-family: Inter, sans-serif;
 }
 
 .dashboardHeader {
-    height: 75px;
-    padding: 0 50px;
+    height: 80px;
+    padding: 0 5%;
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    border-bottom: 1px solid #303849;
+    justify-content: space-between;
     background: #111521;
+    border-bottom: 1px solid #303849;
 }
 
 .dashboardHeader h1 {
-    font-size: 26px;
-    font-weight: 700;
+    font-size: 27px;
+    font-weight: 750;
     letter-spacing: -1px;
 }
 
-.dashboardHeader div {
+.headerUser {
     display: flex;
     align-items: center;
-    gap: 20px;
+    gap: 14px;
+    color: #CBD5E1;
 }
 
-.dashboardHeader span {
-    color: #94A3B8;
-    font-size: 14px;
+.userAvatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: #29213F;
+    color: #C4B5FD;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 700;
+}
+
+.logoutButton {
+    margin-left: 10px;
+    padding: 10px 20px;
+    background: transparent;
+    border: 1px solid #303849;
+    border-radius: 9px;
+    color: #F1F5F9;
+    font-weight: 600;
+    cursor: pointer;
+    transition: 0.2s;
+}
+
+.logoutButton:hover {
+    border-color: #8B5CF6;
+    color: #C4B5FD;
 }
 
 .dashboardContent {
-    max-width: 1200px;
+    width: 90%;
+    max-width: 1150px;
     margin: 0 auto;
-    padding: 45px 40px;
+    padding: 55px 0;
 }
 
-.dashboardContent > h2 {
-    font-size: 28px;
-    font-weight: 600;
+.welcomeSection {
+    min-height: 190px;
+    padding: 35px 40px;
+    border-radius: 16px;
+    background: linear-gradient(110deg, #21183A, #171B2B 75%);
+    border: 1px solid #38304F;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    overflow: hidden;
+    position: relative;
+}
+
+.welcomeLabel {
+    color: #A78BFA;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 2px;
+}
+
+.welcomeSection h2 {
+    font-size: 30px;
+    margin: 12px 0;
+}
+
+.welcomeSection p:last-child {
+    color: #A1AABC;
+    font-size: 15px;
+}
+
+.welcomeDecoration {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    background: #8B5CF6;
+    opacity: 0.12;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-right: 40px;
+}
+
+.welcomeDecoration span {
+    font-size: 100px;
+    font-weight: 800;
+    color: white;
+}
+
+.dashboardSection {
+    margin-top: 50px;
+}
+
+.sectionHeading h2,
+.workflowSection h2 {
+    font-size: 21px;
     margin-bottom: 8px;
 }
 
-.dashboardContent section {
-    margin-top: 35px;
-}
-
-.dashboardContent section h2 {
-    font-size: 21px;
-    margin-bottom: 24px;
-}
-
-.dashboardScreen button {
-    background: #8B5CF6;
-    color: white;
-    border: none;
-    padding: 13px 22px;
-    border-radius: 8px;
+.sectionHeading p,
+.workflowSubtitle {
+    color: #94A3B8;
     font-size: 14px;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.2s, transform 0.2s;
+    margin-top: 0;
 }
 
-.dashboardScreen button:hover {
-    background: #7C3AED;
-    transform: translateY(-2px);
+.actionGrid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 22px;
+    margin-top: 25px;
 }
 
-.dashboardHeader button {
-    background: transparent;
+.actionCard {
+    background: #151925;
     border: 1px solid #303849;
-    padding: 9px 18px;
-}
-
-.dashboardHeader button:hover {
-    background: #1D2331;
-    border-color: #8B5CF6;
-}
-
-.dashboardContent section {
-    margin-top: 35px;
+    border-radius: 13px;
+    padding: 25px;
+    min-height: 210px;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    align-items: flex-start;
+    transition: transform 0.2s, border-color 0.2s, background 0.2s;
+}
+
+.actionCard[role="button"] {
+    cursor: pointer;
+}
+
+.actionCard[role="button"]:hover {
+    transform: translateY(-4px);
+    border-color: #8B5CF6;
+    background: #191E2C;
+}
+
+.actionIcon {
+    width: 45px;
+    height: 45px;
+    border-radius: 11px;
+    display: flex;
+    align-items: center;
     justify-content: center;
-    gap: 18px;
+    font-size: 25px;
+    font-weight: 600;
+    margin-bottom: 20px;
 }
 
-.dashboardContent section h2 {
-    flex-basis: 100%;
-    text-align: center;
+.purpleIcon {
+    background: #30234D;
+    color: #BFA7FF;
 }
 
-@media (max-width: 600px) {
+.blueIcon {
+    background: #1D304A;
+    color: #7CB8FF;
+}
+
+.greenIcon {
+    background: #1D3A32;
+    color: #6EE7B7;
+}
+
+.actionCard h3 {
+    font-size: 17px;
+    margin: 0 0 10px;
+}
+
+.actionCard p {
+    color: #94A3B8;
+    font-size: 13px;
+    line-height: 1.7;
+    margin: 0 0 20px;
+}
+
+.cardLink {
+    color: #A78BFA;
+    font-size: 13px;
+    font-weight: 600;
+    margin-top: auto;
+}
+
+.cardLink span {
+    margin-left: 5px;
+    transition: margin 0.2s;
+}
+
+.actionCard:hover .cardLink span {
+    margin-left: 10px;
+}
+
+.comingSoon {
+    margin-top: auto;
+    color: #64748B;
+    font-size: 12px;
+    border: 1px solid #303849;
+    border-radius: 20px;
+    padding: 5px 10px;
+}
+
+.workflowSection {
+    margin-top: 60px;
+}
+
+.workflowGrid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 20px;
+    margin-top: 25px;
+}
+
+.workflowItem {
+    padding: 20px;
+    border-left: 2px solid #49356D;
+    background: #111521;
+    border-radius: 0 10px 10px 0;
+}
+
+.workflowNumber {
+    color: #A78BFA;
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 1px;
+}
+
+.workflowItem h3 {
+    font-size: 15px;
+    margin: 12px 0 8px;
+}
+
+.workflowItem p {
+    font-size: 12px;
+    line-height: 1.6;
+    color: #94A3B8;
+}
+
+.dashboardLoading {
+    min-height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #0B0D14;
+    color: #F1F5F9;
+}
+
+@media (max-width: 800px) {
+    .workflowGrid {
+        grid-template-columns: repeat(2, 1fr);
+    }
+
+    .welcomeDecoration {
+        display: none;
+    }
+}
+
+@media (max-width: 550px) {
     .dashboardHeader {
-        padding: 0 20px;
+        padding: 0 5%;
+    }
+
+    .headerUser {
+        gap: 8px;
+    }
+
+    .headerUser > span {
+        display: none;
     }
 
     .dashboardContent {
-        padding: 30px 20px;
+        padding: 30px 0;
     }
 
-    .dashboardContent > h2 {
+    .welcomeSection {
+        padding: 25px;
+    }
+
+    .welcomeSection h2 {
         font-size: 23px;
     }
 
-    .dashboardContent section {
-        flex-direction: column;
-    }
-
-    .dashboardContent section button {
-        width: 100%;
+    .workflowGrid {
+        grid-template-columns: 1fr;
     }
 }

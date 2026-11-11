@@ -145,7 +145,7 @@ function Register() {
         </button>
 
         <p className="registerFooter">
-          Already have an account? <Link to="/login">Sign in</Link>
+          Already have an account? <Link to="/">Sign in</Link>
         </p>
       </form>
     </div>

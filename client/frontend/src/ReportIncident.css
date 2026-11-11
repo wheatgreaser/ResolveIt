@@ -1,0 +1,139 @@
+
+.incidentScreen {
+    min-height: 100vh;
+    background: #0B0D14;
+    color: #F1F5F9;
+    font-family: Inter, sans-serif;
+}
+
+.incidentHeader {
+    height: 75px;
+    padding: 0 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111521;
+    border-bottom: 1px solid #303849;
+}
+
+.incidentHeader h1 {
+    font-size: 26px;
+    letter-spacing: -1px;
+}
+
+.incidentHeader button {
+    padding: 10px 16px;
+    background: transparent;
+    border: 1px solid #303849;
+    color: white;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.incidentForm {
+    width: min(600px, calc(100% - 32px));
+    margin: 50px auto;
+    padding: 36px;
+    box-sizing: border-box;
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 16px;
+}
+
+.incidentForm h2 {
+    font-size: 26px;
+    margin: 0 0 10px;
+}
+
+.incidentForm > p {
+    color: #94A3B8;
+    margin-bottom: 30px;
+}
+
+.incidentInputGroup {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    margin-bottom: 22px;
+    flex: 1;
+    min-width: 0;
+}
+
+.incidentInputGroup label {
+    font-size: 14px;
+    color: #CBD5E1;
+}
+
+.incidentInputGroup input,
+.incidentInputGroup textarea,
+.incidentInputGroup select {
+    width: 100%;
+    box-sizing: border-box;
+    padding: 12px 14px;
+    background: #1D2331;
+    border: 1px solid #303849;
+    border-radius: 8px;
+    color: #F1F5F9;
+    font-family: inherit;
+    font-size: 14px;
+    outline: none;
+}
+
+.incidentInputGroup textarea {
+    resize: vertical;
+    min-height: 110px;
+}
+
+.incidentInputGroup input:focus,
+.incidentInputGroup textarea:focus,
+.incidentInputGroup select:focus {
+    border-color: #8B5CF6;
+    box-shadow: 0 0 0 3px rgba(139, 92, 246, 0.15);
+}
+
+.incidentFormRow {
+    display: flex;
+    gap: 18px;
+}
+
+.incidentSubmit {
+    width: 100%;
+    height: 46px;
+    border: none;
+    border-radius: 8px;
+    background: #8B5CF6;
+    color: white;
+    font-size: 15px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.incidentSubmit:hover {
+    background: #7C3AED;
+}
+
+.incidentSubmit:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.incidentError {
+    color: #F87171 !important;
+    font-size: 14px;
+}
+
+@media (max-width: 600px) {
+    .incidentHeader {
+        padding: 0 20px;
+    }
+
+    .incidentForm {
+        padding: 24px;
+        margin: 25px auto;
+    }
+
+    .incidentFormRow {
+        flex-direction: column;
+        gap: 0;
+    }
+}

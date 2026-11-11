@@ -1,0 +1,186 @@
+
+.myIncidentsScreen {
+    min-height: 100vh;
+    background: #0B0D14;
+    color: #F1F5F9;
+    font-family: Inter, sans-serif;
+}
+
+.myIncidentsHeader {
+    height: 75px;
+    padding: 0 50px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #111521;
+    border-bottom: 1px solid #303849;
+}
+
+.myIncidentsHeader h1 {
+    font-size: 26px;
+    letter-spacing: -1px;
+}
+
+.myIncidentsHeader button,
+.myIncidentsTitle button,
+.emptyIncidents button {
+    background: #8B5CF6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 18px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.myIncidentsHeader button {
+    background: transparent;
+    border: 1px solid #303849;
+}
+
+.myIncidentsContent {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 45px 35px;
+}
+
+.myIncidentsTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 30px;
+}
+
+.myIncidentsTitle h2 {
+    font-size: 28px;
+    margin: 0 0 8px;
+}
+
+.myIncidentsTitle p,
+.emptyIncidents p {
+    color: #94A3B8;
+    font-size: 14px;
+}
+
+.incidentCount {
+    color: #94A3B8;
+    font-size: 14px;
+    margin-bottom: 18px;
+}
+
+.incidentTableWrapper {
+    width: 100%;
+    overflow-x: auto;
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 12px;
+}
+
+.incidentTable {
+    width: 100%;
+    border-collapse: collapse;
+    text-align: left;
+    white-space: nowrap;
+}
+
+.incidentTable th {
+    background: #1D2331;
+    color: #94A3B8;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.incidentTable th,
+.incidentTable td {
+    padding: 18px 16px;
+    border-bottom: 1px solid #303849;
+}
+
+.incidentTable td {
+    font-size: 14px;
+}
+
+.incidentTable tbody tr:hover {
+    background: #1D2331;
+}
+
+.incidentTable tbody tr:last-child td {
+    border-bottom: none;
+}
+
+/* Status badges */
+.statusBadge {
+    display: inline-block;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.status-new {
+    background: #1E3A5F;
+    color: #60A5FA;
+}
+
+.status-assigned,
+.status-classified {
+    background: #3B2F1B;
+    color: #FBBF24;
+}
+
+.status-in_progress,
+.status-acknowledged {
+    background: #31245A;
+    color: #C4B5FD;
+}
+
+.status-resolved,
+.status-verified,
+.status-closed {
+    background: #143D30;
+    color: #6EE7B7;
+}
+
+.emptyIncidents {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 12px;
+    padding: 60px 20px;
+    text-align: center;
+}
+
+.emptyIncidents h3 {
+    margin-bottom: 10px;
+}
+
+.emptyIncidents button {
+    margin-top: 15px;
+}
+
+.myIncidentsError {
+    color: #F87171;
+}
+
+@media (max-width: 650px) {
+    .myIncidentsHeader {
+        padding: 0 20px;
+    }
+
+    .myIncidentsContent {
+        padding: 30px 16px;
+    }
+
+    .myIncidentsTitle {
+        align-items: flex-start;
+        flex-direction: column;
+    }
+}
+
+.clickableIncident {
+    cursor: pointer;
+}
+
+.clickableIncident:hover {
+    background-color: #f0f0f0;
+}

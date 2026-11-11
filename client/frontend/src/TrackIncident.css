@@ -1,0 +1,141 @@
+.track-page {
+    min-height: 100vh;
+    padding: 40px;
+    background: #0B0D14;
+    color: #F1F5F9;
+    font-family: Inter, sans-serif;
+}
+
+.track-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 35px 0;
+}
+
+.track-header h1 {
+    margin: 8px 0;
+}
+
+.incident-id {
+    color: #8B5CF6;
+    font-size: 13px;
+    font-weight: 600;
+}
+
+.track-card {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 12px;
+    padding: 25px;
+    margin-bottom: 25px;
+}
+
+.track-card h2 {
+    margin-top: 0;
+    margin-bottom: 25px;
+}
+
+.track-card p {
+    color: #CBD5E1;
+    line-height: 1.7;
+}
+
+.progress-list {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+    overflow-x: auto;
+    padding: 10px 0;
+}
+
+.progress-step {
+    min-width: 95px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: #64748B;
+    font-size: 12px;
+    text-align: center;
+}
+
+.progress-dot {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    border: 2px solid #475569;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.progress-step.completed {
+    color: #A78BFA;
+}
+
+.progress-step.completed .progress-dot {
+    background: #8B5CF6;
+    border-color: #8B5CF6;
+    color: white;
+}
+
+.status-badge {
+    padding: 7px 12px;
+    border-radius: 20px;
+    background: #29213F;
+    color: #C4B5FD;
+    font-size: 12px;
+}
+
+.track-error {
+    color: #F87171;
+    padding: 30px;
+}
+
+@media (max-width: 650px) {
+    .track-page {
+        padding: 20px;
+    }
+
+    .track-header {
+        align-items: flex-start;
+        flex-direction: column;
+        gap: 15px;
+    }
+}
+.backButton {
+    display: inline-flex;
+    align-items: center;
+    gap: 10px;
+
+    background: transparent;
+    border: 1px solid #303849;
+    border-radius: 8px;
+
+    padding: 10px 16px;
+
+    color: #94A3B8;
+    font-size: 14px;
+    font-weight: 500;
+
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.backButton:hover {
+    background: #1D2331;
+    border-color: #8B5CF6;
+    color: #C4B5FD;
+    transform: translateX(-3px);
+}
+
+.backArrow {
+    font-size: 19px;
+    line-height: 1;
+    transition: transform 0.2s ease;
+}
+
+.backButton:hover .backArrow {
+    transform: translateX(-3px);
+}
