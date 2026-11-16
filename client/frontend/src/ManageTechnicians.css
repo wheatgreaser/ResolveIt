@@ -1,0 +1,366 @@
+.manageTechniciansPage {
+    min-height: 100vh;
+    padding: 30px;
+    color: #F1F5F9;
+}
+
+.manageTechniciansHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.manageTechniciansHeader h1 {
+    margin: 0 0 8px;
+    font-size: 26px;
+}
+
+.manageTechniciansHeader p {
+    color: #94A3B8;
+    font-size: 14px;
+    margin: 0;
+}
+
+.refreshTechniciansButton,
+.editTechnicianButton {
+    background: #1D2331;
+    border: 1px solid #303849;
+    color: #C4B5FD;
+    border-radius: 8px;
+    padding: 9px 14px;
+    cursor: pointer;
+}
+
+.technicianSummary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.technicianSummaryCard {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.technicianSummaryCard span {
+    color: #94A3B8;
+    font-size: 13px;
+}
+
+.technicianSummaryCard strong {
+    font-size: 25px;
+}
+
+.techniciansTableContainer {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.techniciansTable {
+    width: 100%;
+    min-width: 900px;
+    border-collapse: collapse;
+}
+
+.techniciansTable th {
+    text-align: left;
+    padding: 16px;
+    color: #94A3B8;
+    font-size: 12px;
+    border-bottom: 1px solid #303849;
+}
+
+.techniciansTable td {
+    padding: 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #303849;
+}
+
+.techniciansTable tbody tr:hover {
+    background: #1D2331;
+}
+
+.technicianIdentity {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.technicianIdentity span {
+    color: #94A3B8;
+    font-size: 11px;
+}
+
+.technicianSkillTags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px;
+    max-width: 220px;
+}
+
+.technicianSkillTags span {
+    background: #30244B;
+    color: #C4B5FD;
+    padding: 5px 8px;
+    border-radius: 5px;
+    font-size: 10px;
+}
+
+.noSkills {
+    color: #64748B;
+    font-size: 12px;
+}
+
+.technicianWorkload {
+    min-width: 100px;
+}
+
+.workloadBar {
+    width: 100%;
+    height: 6px;
+    margin-top: 8px;
+    background: #303849;
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.workloadBar div {
+    height: 100%;
+    background: #8B5CF6;
+    border-radius: 10px;
+}
+
+.availabilityToggle {
+    border: 1px solid;
+    border-radius: 20px;
+    padding: 7px 11px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.availabilityToggle.available {
+    color: #4ADE80;
+    border-color: #166534;
+    background: rgba(34, 197, 94, 0.1);
+}
+
+.availabilityToggle.unavailable {
+    color: #F87171;
+    border-color: #7F1D1D;
+    background: rgba(239, 68, 68, 0.1);
+}
+
+.editTechnicianButton:hover,
+.refreshTechniciansButton:hover {
+    background: #303849;
+}
+
+.techniciansEmpty {
+    padding: 30px;
+    text-align: center;
+    color: #94A3B8;
+}
+
+.technicianMessage {
+    padding: 12px 16px;
+    margin-bottom: 18px;
+    border-radius: 8px;
+    font-size: 13px;
+}
+
+.technicianMessage.error {
+    background: rgba(239, 68, 68, 0.12);
+    color: #F87171;
+}
+
+.technicianMessage.success {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ADE80;
+}
+
+/* Modal */
+
+.technicianModalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 20px;
+}
+
+.technicianModal {
+    width: 100%;
+    max-width: 600px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 14px;
+    padding: 25px;
+}
+
+.technicianModalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.technicianModalHeader h2 {
+    margin: 0 0 6px;
+    font-size: 21px;
+}
+
+.technicianModalHeader p {
+    color: #94A3B8;
+    margin: 0;
+    font-size: 12px;
+}
+
+.closeTechnicianModal {
+    background: transparent;
+    border: none;
+    color: #94A3B8;
+    font-size: 27px;
+    cursor: pointer;
+}
+
+.technicianEditSection {
+    border-top: 1px solid #303849;
+    padding-top: 20px;
+    margin-top: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.technicianEditSection h3 {
+    margin: 0 0 8px;
+    font-size: 16px;
+}
+
+.technicianEditSection label {
+    color: #CBD5E1;
+    font-size: 12px;
+}
+
+.technicianEditSection input:not([type="checkbox"]),
+.technicianEditSection select,
+.addSkillForm input,
+.addSkillForm select {
+    background: #1D2331;
+    color: #F1F5F9;
+    border: 1px solid #303849;
+    border-radius: 7px;
+    padding: 10px;
+    outline: none;
+}
+
+.availabilityCheckbox {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+}
+
+.availabilityCheckbox input {
+    accent-color: #8B5CF6;
+}
+
+.saveTechnicianButton,
+.addSkillButton {
+    background: #8B5CF6;
+    color: white;
+    border: none;
+    border-radius: 7px;
+    padding: 11px 15px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+.saveTechnicianButton:hover,
+.addSkillButton:hover {
+    background: #7C3AED;
+}
+
+.saveTechnicianButton:disabled,
+.addSkillButton:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+.technicianSkillList {
+    display: flex;
+    flex-direction: column;
+    gap: 9px;
+}
+
+.technicianSkillRow {
+    display: grid;
+    grid-template-columns: 1fr 110px auto;
+    align-items: center;
+    gap: 10px;
+    background: #1D2331;
+    border: 1px solid #303849;
+    padding: 10px;
+    border-radius: 8px;
+}
+
+.technicianSkillRow strong {
+    font-size: 13px;
+}
+
+.removeSkillButton {
+    background: transparent;
+    border: 1px solid #7F1D1D;
+    color: #F87171;
+    padding: 7px 10px;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.addSkillForm {
+    display: grid;
+    grid-template-columns: 1fr 100px auto;
+    gap: 8px;
+    margin-top: 10px;
+}
+
+@media (max-width: 700px) {
+    .manageTechniciansPage {
+        padding: 18px;
+    }
+
+    .technicianSummary {
+        grid-template-columns: 1fr;
+    }
+
+    .manageTechniciansHeader {
+        align-items: flex-start;
+        gap: 15px;
+        flex-direction: column;
+    }
+
+    .technicianSkillRow {
+        grid-template-columns: 1fr 100px;
+    }
+
+    .removeSkillButton {
+        grid-column: 1 / -1;
+    }
+
+    .addSkillForm {
+        grid-template-columns: 1fr;
+    }
+}

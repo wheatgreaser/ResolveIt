@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
+import NotificationBell from "./NotificationBell";
 
 type UserRole = "EMPLOYEE" | "TECHNICIAN" | "ADMIN";
 
@@ -72,7 +73,7 @@ function Dashboard() {
 
             <header className="dashboardHeader">
                 <h1>ResolveIt</h1>
-
+                <NotificationBell />
                 <div className="headerUser">
                     <div className="userAvatar">
                         {user.username.charAt(0).toUpperCase()}
@@ -224,41 +225,229 @@ function EmployeeDashboard() {
     );
 }
 
+
+interface TechnicianIncident {
+    incident_id: number;
+    title: string;
+    description: string;
+    affected_service: string;
+    impact: string;
+    urgency: string;
+    priority: string | null;
+    status: string;
+    created_at: string;
+    updated_at: string;
+    reporter_name: string;
+}
+
 function TechnicianDashboard() {
+    const navigate = useNavigate();
+
+    const [incidents, setIncidents] = useState<TechnicianIncident[]>([]);
+    const [loading, setLoading] = useState(true);
+    const [error, setError] = useState("");
+
+    async function loadIncidents() {
+        const token = localStorage.getItem("token");
+
+        if (!token) {
+            navigate("/");
+            return;
+        }
+
+        try {
+            setLoading(true);
+            setError("");
+
+            const response = await fetch(
+                "http://localhost:8080/incidents/assigned",
+                {
+                    headers: {
+                        Authorization: `Bearer ${token}`
+                    }
+                }
+            );
+
+            if (response.status === 401) {
+                localStorage.removeItem("token");
+                navigate("/");
+                return;
+            }
+
+            if (!response.ok) {
+                throw new Error("Failed to fetch assigned incidents");
+            }
+
+            const data = await response.json();
+            setIncidents(data.incidents);
+
+        } catch (err) {
+            setError(
+                err instanceof Error
+                    ? err.message
+                    : "Something went wrong"
+            );
+        } finally {
+            setLoading(false);
+        }
+    }
+
+    useEffect(() => {
+        loadIncidents();
+    }, []);
+
+    const awaitingAcknowledgement = incidents.filter(
+        incident => incident.status === "ASSIGNED"
+    ).length;
+
+    const inProgress = incidents.filter(
+        incident => incident.status === "IN_PROGRESS"
+    ).length;
+
+    const waitingForUser = incidents.filter(
+        incident => incident.status === "WAITING_FOR_USER"
+    ).length;
+
+    if (loading) {
+        return (
+            <section className="dashboardSection">
+                <p>Loading assigned incidents...</p>
+            </section>
+        );
+    }
+
     return (
-        <section className="dashboardSection">
-            <div className="sectionHeading">
-                <div>
-                    <h2>Technician Workspace</h2>
-                    <p>Tools for managing and resolving incidents.</p>
-                </div>
-            </div>
+        <>
+            <section className="dashboardSection">
 
-            <div className="actionGrid">
-                <div className="actionCard">
-                    <div className="actionIcon purpleIcon">▤</div>
-                    <h3>Assigned Incidents</h3>
-                    <p>View and manage incidents assigned to you.</p>
-                    <span className="comingSoon">Coming soon</span>
+                <div className="sectionHeading">
+                    <div>
+                        <h2>Technician Workspace</h2>
+                        <p>Manage and resolve your assigned incidents.</p>
+                    </div>
+
+                    <button onClick={loadIncidents}>
+                        Refresh
+                    </button>
                 </div>
 
-                <div className="actionCard">
-                    <div className="actionIcon blueIcon">⌕</div>
-                    <h3>Investigate Incidents</h3>
-                    <p>Review incident details and update their progress.</p>
-                    <span className="comingSoon">Coming soon</span>
+                {error && (
+                    <p className="technicianError">{error}</p>
+                )}
+
+                <div className="actionGrid">
+
+                    <div className="actionCard">
+                        <div className="actionIcon purpleIcon">▤</div>
+                        <h3>Total Assigned</h3>
+                        <p>{incidents.length} active assignments.</p>
+                    </div>
+
+                    <div className="actionCard">
+                        <div className="actionIcon blueIcon">◷</div>
+                        <h3>Awaiting Acknowledgement</h3>
+                        <p>{awaitingAcknowledgement} incidents pending.</p>
+                    </div>
+
+                    <div className="actionCard">
+                        <div className="actionIcon greenIcon">✓</div>
+                        <h3>In Progress</h3>
+                        <p>{inProgress} incidents being investigated.</p>
+                    </div>
+
+                    <div className="actionCard">
+                        <div className="actionIcon purpleIcon">⌕</div>
+                        <h3>Waiting for User</h3>
+                        <p>{waitingForUser} incidents awaiting information.</p>
+                    </div>
+
+                </div>
+            </section>
+
+            <section className="dashboardSection">
+
+                <div className="sectionHeading">
+                    <div>
+                        <h2>Assigned Incidents</h2>
+                        <p>Incidents currently assigned to your account.</p>
+                    </div>
                 </div>
 
-                <div className="actionCard">
-                    <div className="actionIcon greenIcon">◷</div>
-                    <h3>My Workload</h3>
-                    <p>Monitor your assigned work and pending tasks.</p>
-                    <span className="comingSoon">Coming soon</span>
-                </div>
-            </div>
-        </section>
+                {incidents.length === 0 ? (
+                    <div className="emptyTechnician">
+                        <h3>No assigned incidents</h3>
+                        <p>You currently have no incidents to investigate.</p>
+                    </div>
+                ) : (
+                    <div className="technicianIncidentList">
+
+                        {incidents.map(incident => (
+                            <article
+                                className="technicianIncidentCard"
+                                key={incident.incident_id}
+                            >
+                                <div className="technicianIncidentInfo">
+
+                                    <span className="incidentReference">
+                                        INCIDENT #{incident.incident_id}
+                                    </span>
+
+                                    <h3>{incident.title}</h3>
+
+                                    <p>{incident.description}</p>
+
+                                    <div className="technicianMetadata">
+                                        <span>
+                                            Service: {incident.affected_service}
+                                        </span>
+
+                                        <span>
+                                            Category: {incident.category || "Unspecified"}
+                                        </span>
+
+                                        <span>
+                                            Reported: {
+                                                new Date(
+                                                    incident.created_at
+                                                ).toLocaleDateString()
+                                            }
+                                        </span>
+                                    </div>
+
+                                </div>
+
+                                <div className="technicianIncidentActions">
+
+                                    <span className={`priorityBadge ${incident.priority || ""}`}>
+                                        {incident.priority || "UNPRIORITIZED"}
+                                    </span>
+
+                                    <span className="statusBadge">
+                                        {(incident.status ?? "UNKNOWN").replaceAll("_", " ")}
+                                    </span>
+
+                                    <button
+                                        onClick={() =>
+                                            navigate(
+                                                `/technician/incidents/${incident.incident_id}`
+                                            )
+                                        }
+                                    >
+                                        View Incident →
+                                    </button>
+
+                                </div>
+                            </article>
+                        ))}
+
+                    </div>
+                )}
+
+            </section>
+        </>
     );
 }
+
 
 function AdminDashboard() {
     const navigate = useNavigate();
@@ -273,39 +462,46 @@ function AdminDashboard() {
         {
             title: "Manage Users",
             description: "Manage employee and technician accounts.",
-            icon: "♙",
-            path: null
+            icon: "♟",
+            path: "/admin/users"
         },
         {
             title: "Manage Technicians",
             description: "Manage technician skills, availability, and workload.",
             icon: "⚙",
-            path: null
+            path: "/admin/technicians"
         },
         {
             title: "Manage Services",
             description: "Configure the IT services supported.",
             icon: "▦",
-            path: null
+            path: "/admin/services"
         },
         {
             title: "Configure SLAs",
-            description: "Define service-level agreements and targets.",
+            description: "Set response and resolution targets for each incident priority.",
             icon: "◷",
-            path: null
+            path: "/admin/sla-config"
         },
         {
             title: "View Reports",
             description: "Review incident trends and service performance.",
             icon: "▥",
-            path: null
+            path: "/admin/reports"
         },
         {
         title: "Classify Incidents",
         description: "Review new incidents and determine their priority.",
         icon: "▤",
         path: "/admin/classification"
-        }
+        },
+        {
+        title: "Incident Management",
+        description: "Review incidents, inspect resolutions, and close verified incidents.",
+        icon: "▣",
+        path: "/admin/incidents"
+},
+
 
     ];
 

@@ -1,0 +1,337 @@
+
+.manageServicesPage {
+    min-height: 100vh;
+    padding: 30px;
+    color: #F1F5F9;
+}
+
+.manageServicesHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 20px;
+    margin-bottom: 25px;
+}
+
+.manageServicesHeader h1 {
+    margin: 0 0 8px;
+    font-size: 26px;
+}
+
+.manageServicesHeader p {
+    margin: 0;
+    color: #94A3B8;
+    font-size: 14px;
+}
+
+.addServiceButton {
+    background: #8B5CF6;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 11px 17px;
+    font-weight: 600;
+    cursor: pointer;
+}
+
+.addServiceButton:hover {
+    background: #7C3AED;
+}
+
+.addServiceButton:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.serviceSummary {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 16px;
+    margin-bottom: 24px;
+}
+
+.serviceSummaryCard {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 10px;
+    padding: 18px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.serviceSummaryCard span {
+    color: #94A3B8;
+    font-size: 13px;
+}
+
+.serviceSummaryCard strong {
+    font-size: 25px;
+}
+
+.serviceFilters {
+    display: flex;
+    gap: 12px;
+    margin-bottom: 20px;
+}
+
+.serviceFilters input,
+.serviceFilters select {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 8px;
+    color: #F1F5F9;
+    padding: 12px;
+    outline: none;
+}
+
+.serviceFilters input {
+    flex: 1;
+    min-width: 180px;
+}
+
+.serviceFilters select {
+    min-width: 150px;
+}
+
+.serviceFilters input:focus,
+.serviceFilters select:focus {
+    border-color: #8B5CF6;
+}
+
+.servicesTableContainer {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 12px;
+    overflow-x: auto;
+}
+
+.servicesTable {
+    width: 100%;
+    min-width: 850px;
+    border-collapse: collapse;
+}
+
+.servicesTable th {
+    text-align: left;
+    padding: 16px;
+    color: #94A3B8;
+    font-size: 12px;
+    border-bottom: 1px solid #303849;
+}
+
+.servicesTable td {
+    padding: 16px;
+    font-size: 13px;
+    border-bottom: 1px solid #303849;
+}
+
+.servicesTable tbody tr:hover {
+    background: #1D2331;
+}
+
+.serviceCategory {
+    background: #30244B;
+    color: #C4B5FD;
+    padding: 5px 9px;
+    border-radius: 5px;
+    font-size: 10px;
+}
+
+.serviceDescription {
+    color: #94A3B8;
+    max-width: 300px;
+}
+
+.serviceStatus {
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.serviceStatus.active {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ADE80;
+}
+
+.serviceStatus.inactive {
+    background: rgba(239, 68, 68, 0.12);
+    color: #F87171;
+}
+
+.serviceActions {
+    display: flex;
+    gap: 8px;
+}
+
+.editServiceButton,
+.deactivateServiceButton,
+.activateServiceButton {
+    background: transparent;
+    border: 1px solid #303849;
+    border-radius: 6px;
+    padding: 7px 10px;
+    font-size: 11px;
+    cursor: pointer;
+}
+
+.editServiceButton {
+    color: #C4B5FD;
+}
+
+.deactivateServiceButton {
+    color: #F87171;
+}
+
+.activateServiceButton {
+    color: #4ADE80;
+}
+
+.serviceActions button:hover {
+    background: #303849;
+}
+
+.servicesEmpty {
+    padding: 35px;
+    text-align: center;
+    color: #94A3B8;
+}
+
+.serviceMessage {
+    padding: 12px 16px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+    font-size: 13px;
+}
+
+.serviceMessage.error {
+    background: rgba(239, 68, 68, 0.12);
+    color: #F87171;
+}
+
+.serviceMessage.success {
+    background: rgba(34, 197, 94, 0.12);
+    color: #4ADE80;
+}
+
+/* Modal */
+
+.serviceModalOverlay {
+    position: fixed;
+    inset: 0;
+    z-index: 2000;
+    background: rgba(0, 0, 0, 0.75);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+}
+
+.serviceModal {
+    width: 100%;
+    max-width: 480px;
+    max-height: 90vh;
+    overflow-y: auto;
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 14px;
+    padding: 25px;
+}
+
+.serviceModalHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 22px;
+}
+
+.serviceModalHeader h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.closeServiceModal {
+    background: transparent;
+    border: none;
+    color: #94A3B8;
+    font-size: 26px;
+    cursor: pointer;
+}
+
+.serviceModal form {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.serviceModal label {
+    color: #CBD5E1;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.serviceModal input,
+.serviceModal textarea,
+.serviceModal select {
+    width: 100%;
+    box-sizing: border-box;
+    background: #1D2331;
+    color: #F1F5F9;
+    border: 1px solid #303849;
+    border-radius: 7px;
+    padding: 11px;
+    margin-bottom: 8px;
+    font: inherit;
+    font-size: 13px;
+    outline: none;
+}
+
+.serviceModal input:focus,
+.serviceModal textarea:focus,
+.serviceModal select:focus {
+    border-color: #8B5CF6;
+}
+
+.serviceModal textarea {
+    resize: vertical;
+}
+
+.serviceModalActions {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+    margin-top: 12px;
+}
+
+.cancelServiceButton {
+    background: #1D2331;
+    border: 1px solid #303849;
+    color: #CBD5E1;
+    padding: 10px 16px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+@media (max-width: 700px) {
+    .manageServicesPage {
+        padding: 18px;
+    }
+
+    .manageServicesHeader {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+
+    .serviceSummary {
+        grid-template-columns: 1fr;
+    }
+
+    .serviceFilters {
+        flex-direction: column;
+    }
+
+    .serviceFilters select {
+        width: 100%;
+    }
+}

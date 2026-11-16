@@ -1,0 +1,331 @@
+
+.adminIncidentPage {
+    min-height: 100vh;
+    background: #0B0D14;
+    color: #F1F5F9;
+    font-family: Inter, sans-serif;
+}
+
+.adminIncidentHeader {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 22px 5%;
+    border-bottom: 1px solid #303849;
+}
+
+.adminIncidentHeader h1 {
+    margin: 0;
+    font-size: 24px;
+}
+
+.adminIncidentHeader span,
+.adminIncidentTitle p {
+    color: #94A3B8;
+    font-size: 13px;
+}
+
+.adminIncidentHeader button,
+.adminIncidentTitle button {
+    background: #1D2331;
+    color: #F1F5F9;
+    border: 1px solid #303849;
+    border-radius: 8px;
+    padding: 10px 16px;
+    cursor: pointer;
+}
+
+.adminIncidentContent {
+    max-width: 1400px;
+    margin: auto;
+    padding: 35px 5%;
+}
+
+.adminIncidentTitle {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.adminIncidentTitle h2 {
+    margin-bottom: 6px;
+}
+
+.adminIncidentLayout {
+    display: grid;
+    grid-template-columns: 360px minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+}
+
+.adminIncidentList,
+.adminIncidentDetails {
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 12px;
+    padding: 20px;
+}
+
+.adminIncidentList h3 {
+    margin-top: 0;
+}
+
+.adminIncidentItem {
+    display: block;
+    width: 100%;
+    text-align: left;
+    background: #1D2331;
+    color: #F1F5F9;
+    border: 1px solid #303849;
+    border-radius: 9px;
+    padding: 15px;
+    margin-top: 12px;
+    cursor: pointer;
+}
+
+.adminIncidentItem:hover,
+.selectedAdminIncident {
+    border-color: #8B5CF6;
+    background: #24283A;
+}
+
+.adminIncidentItemTop {
+    display: flex;
+    justify-content: space-between;
+    color: #A78BFA;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.adminIncidentItem h4 {
+    margin: 12px 0 7px;
+    font-size: 15px;
+}
+
+.adminIncidentItem p {
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.adminIncidentStatus {
+    display: inline-block;
+    background: #29243D;
+    color: #C4B5FD;
+    padding: 5px 9px;
+    border-radius: 6px;
+    font-size: 11px;
+    font-weight: 600;
+}
+
+.detailsHeading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+    margin-bottom: 25px;
+}
+
+.detailsHeading h2 {
+    margin-bottom: 0;
+}
+
+.detailsHeading > div > span {
+    color: #A78BFA;
+    font-size: 12px;
+}
+
+.detailsGrid {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+    background: #1D2331;
+    padding: 18px;
+    border-radius: 9px;
+}
+
+.detailsGrid div {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+}
+
+.detailsGrid span {
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.detailsGrid strong {
+    font-size: 14px;
+}
+
+.detailsBlock {
+    margin-top: 25px;
+}
+
+.detailsBlock h3 {
+    font-size: 15px;
+}
+
+.detailsBlock p,
+.closureSection p,
+.closedNotice p {
+    color: #CBD5E1;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.closureSection,
+.closedNotice {
+    margin-top: 28px;
+    padding: 20px;
+    background: #1D2331;
+    border: 1px solid #303849;
+    border-radius: 10px;
+}
+
+.closureSection textarea {
+    display: block;
+    width: 100%;
+    min-height: 100px;
+    box-sizing: border-box;
+    margin: 15px 0;
+    padding: 12px;
+    resize: vertical;
+    background: #0B0D14;
+    color: #F1F5F9;
+    border: 1px solid #303849;
+    border-radius: 8px;
+    font: inherit;
+}
+
+.closureSection button {
+    background: #8B5CF6;
+    color: white;
+    border: none;
+    padding: 11px 18px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.closureSection button:hover {
+    background: #7C3AED;
+}
+
+.closureSection button:disabled {
+    opacity: 0.6;
+    cursor: not-allowed;
+}
+
+.closedNotice {
+    border-color: #166534;
+}
+
+.closedNotice h3 {
+    color: #86EFAC;
+}
+
+.closedNotice small {
+    color: #94A3B8;
+}
+
+.adminIncidentError,
+.adminIncidentMessage {
+    padding: 12px;
+    border-radius: 8px;
+    margin-bottom: 18px;
+}
+
+.adminIncidentError {
+    background: #3B1D27;
+    color: #FCA5A5;
+}
+
+.adminIncidentMessage {
+    background: #163426;
+    color: #86EFAC;
+}
+
+.adminIncidentEmpty {
+    color: #94A3B8;
+    padding: 20px 5px;
+}
+
+.adminIncidentLoading {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background: #0B0D14;
+    color: #F1F5F9;
+}
+
+@media (max-width: 850px) {
+    .adminIncidentLayout {
+        grid-template-columns: 1fr;
+    }
+}
+
+@media (max-width: 550px) {
+    .adminIncidentHeader,
+    .adminIncidentTitle {
+        align-items: flex-start;
+        gap: 15px;
+    }
+
+    .adminIncidentHeader {
+        flex-direction: column;
+    }
+
+    .detailsHeading {
+        flex-direction: column;
+    }
+}
+
+.activitySection {
+    margin-top: 30px;
+}
+
+.activityTimeline {
+    margin-top: 20px;
+    border-left: 2px solid #303849;
+    padding-left: 22px;
+}
+
+.activityItem {
+    position: relative;
+    margin-bottom: 25px;
+}
+
+.activityDot {
+    position: absolute;
+    left: -29px;
+    top: 4px;
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background: #8B5CF6;
+}
+
+.activityHeader {
+    display: flex;
+    justify-content: space-between;
+    gap: 12px;
+}
+
+.activityHeader span {
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.activityType {
+    display: inline-block;
+    margin-top: 8px;
+    color: #A78BFA;
+    font-size: 11px;
+}
+
+.activityContent p {
+    color: #CBD5E1;
+    font-size: 14px;
+    line-height: 1.5;
+}

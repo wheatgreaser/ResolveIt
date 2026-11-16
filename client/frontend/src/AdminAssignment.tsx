@@ -35,12 +35,20 @@ interface Incident {
     created_at: string;
 }
 
+interface Recommendation {
+    technician_id: number;
+    username: string;
+    score: number;
+    reasons: string[];
+}
+
 function AdminAssignment() {
     const navigate = useNavigate();
 
     const [strategy, setStrategy] = useState<Strategy>("SKILL_BASED");
     const [technicians, setTechnicians] = useState<Technician[]>([]);
     const [incidents, setIncidents] = useState<Incident[]>([]);
+    const [recommendations, setRecommendations] = useState<Record<number, Recommendation[]>>({});
     const [selectedTechnicians, setSelectedTechnicians] =
         useState<Record<number, string>>({});
 
@@ -91,6 +99,26 @@ function AdminAssignment() {
             setStrategy(configData.config.strategy);
             setTechnicians(technicianData.technicians);
             setIncidents(incidentData.incidents);
+
+            const recommendationResults = await Promise.all(
+                incidentData.incidents.map(async (incident: Incident) => {
+                    try {
+                        const data = await apiRequest(`/${incident.incident_id}/recommendations`);
+                        return [incident.incident_id, data.recommendations as Recommendation[]] as const;
+                    } catch {
+                        return [incident.incident_id, [] as Recommendation[]] as const;
+                    }
+                })
+            );
+            const nextRecommendations = Object.fromEntries(recommendationResults);
+            setRecommendations(nextRecommendations);
+            setSelectedTechnicians(previous => {
+                const next = { ...previous };
+                for (const [id, ranked] of recommendationResults) {
+                    if (!next[id] && ranked[0]) next[id] = String(ranked[0].technician_id);
+                }
+                return next;
+            });
 
         } catch (err) {
             setError(
@@ -391,6 +419,8 @@ function AdminAssignment() {
                     ) : (
                         <div className="unassignedList">
                             {incidents.map(incident => {
+                                const ranked = recommendations[incident.incident_id] || [];
+                                const recommended = ranked[0];
                                 const eligibleTechnicians = technicians.filter(
                                     technician =>
                                         technician.is_available &&
@@ -419,6 +449,28 @@ function AdminAssignment() {
                                                 <span>{incident.impact} impact</span>
                                                 <span>{incident.urgency} urgency</span>
                                             </div>
+                                            {recommended && (
+                                                <div className="recommendationPanel">
+                                                    <strong>
+                                                        Recommended: {recommended.username} · {recommended.score}/100
+                                                    </strong>
+                                                    <ul>
+                                                        {recommended.reasons.map(reason => (
+                                                            <li key={reason}>{reason}</li>
+                                                        ))}
+                                                    </ul>
+                                                    {ranked.length > 1 && (
+                                                        <span>
+                                                            {ranked.length - 1} other eligible technician{ranked.length === 2 ? "" : "s"} ranked
+                                                        </span>
+                                                    )}
+                                                </div>
+                                            )}
+                                            {!recommended && (
+                                                <div className="recommendationPanel">
+                                                    No eligible technician is currently available for this incident.
+                                                </div>
+                                            )}
                                         </div>
 
                                         <div className="assignmentControls">

@@ -306,3 +306,118 @@
         grid-template-columns: 1fr;
     }
 }
+
+
+.technicianIncidentList {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.technicianIncidentCard {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 25px;
+    padding: 22px;
+    background: #151925;
+    border: 1px solid #303849;
+    border-radius: 12px;
+}
+
+.technicianIncidentInfo {
+    flex: 1;
+}
+
+.incidentReference {
+    color: #A78BFA;
+    font-size: 12px;
+    font-weight: 700;
+}
+
+.technicianIncidentInfo h3 {
+    margin: 10px 0;
+}
+
+.technicianIncidentInfo p {
+    color: #94A3B8;
+}
+
+.technicianMetadata {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 15px;
+    margin-top: 15px;
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.technicianIncidentActions {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    gap: 12px;
+}
+
+.priorityBadge,
+.statusBadge {
+    padding: 7px 12px;
+    border-radius: 20px;
+    font-size: 11px;
+    font-weight: 700;
+    background: #29213F;
+    color: #C4B5FD;
+}
+
+.priorityBadge.P1 {
+    background: #4B2029;
+    color: #FCA5A5;
+}
+
+.priorityBadge.P2 {
+    background: #49321C;
+    color: #FDBA74;
+}
+
+.priorityBadge.P3 {
+    background: #403B1C;
+    color: #FDE68A;
+}
+
+.priorityBadge.P4 {
+    background: #1D3B34;
+    color: #86EFAC;
+}
+
+.technicianIncidentActions button {
+    background: #8B5CF6;
+    color: white;
+    border: none;
+    padding: 11px 16px;
+    border-radius: 7px;
+    cursor: pointer;
+}
+
+.emptyTechnician {
+    padding: 45px;
+    text-align: center;
+    color: #94A3B8;
+    background: #151925;
+    border-radius: 12px;
+}
+
+.technicianError {
+    color: #FCA5A5;
+    margin-bottom: 15px;
+}
+
+@media (max-width: 750px) {
+    .technicianIncidentCard {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .technicianIncidentActions {
+        align-items: flex-start;
+    }
+}

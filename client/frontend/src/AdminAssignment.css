@@ -329,6 +329,32 @@
     font-weight: 700;
 }
 
+.recommendationPanel {
+    margin-top: 14px;
+    padding: 12px 14px;
+    border: 1px solid #4C3B78;
+    border-radius: 8px;
+    background: #211B32;
+    color: #DDD6FE;
+    font-size: 11px;
+}
+
+.recommendationPanel strong {
+    color: #C4B5FD;
+    font-size: 12px;
+}
+
+.recommendationPanel ul {
+    margin: 8px 0;
+    padding-left: 18px;
+    color: #CBD5E1;
+    line-height: 1.6;
+}
+
+.recommendationPanel > span {
+    color: #A78BFA;
+}
+
 .priorityTag.p1 {
     color: #FCA5A5;
     background: #3B2029;
