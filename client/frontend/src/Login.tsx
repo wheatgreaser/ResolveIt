@@ -62,10 +62,23 @@ function Login() {
     return (
         <div className="loginScreen">
             <header className="heading">
+                <span className="loginMark" aria-hidden="true">R</span>
                 ResolveIt
             </header>
 
-            <form className="loginCo" onSubmit={handleSubmit}>
+            <main className="loginLayout">
+                <section className="loginStory" aria-label="ResolveIt service overview">
+                    <span className="storyEyebrow">Support that keeps you moving</span>
+                    <h2>A smoother way to solve things.</h2>
+                    <p className="storyCopy">Bring your requests, updates, and support team together in one clear place.</p>
+                    <div className="storyNote">
+                        <span className="storyNoteMark" aria-hidden="true">✳</span>
+                        <span>Here when you need a hand.</span>
+                    </div>
+                    <div className="storyDots" aria-hidden="true"><span /><span /><span /></div>
+                </section>
+
+                <form className="loginCo" onSubmit={handleSubmit}>
                 <h1 className="windowHeading">Welcome back</h1>
 
                 <p className="loginSubtitle">
@@ -118,7 +131,8 @@ function Login() {
                     Don't have an account?{" "}
                     <Link to="/register">Register</Link>
                 </p>
-            </form>
+                </form>
+            </main>
         </div>
     );
 }

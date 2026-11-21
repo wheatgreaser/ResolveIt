@@ -16,6 +16,7 @@ interface Incident {
     created_at: string;
     updated_at: string;
     technician_name: string | null;
+    reporter_name?: string;
 }
 
 interface Activity {
@@ -26,12 +27,21 @@ interface Activity {
     created_at: string;
 }
 
+interface ResolutionSuggestion {
+    incident_id: number;
+    title: string;
+    resolution_details: string;
+    service_name: string | null;
+    match_score: number;
+}
+
 function TechnicianIncident() {
     const { id } = useParams();
     const navigate = useNavigate();
 
     const [incident, setIncident] = useState<Incident | null>(null);
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [resolutionSuggestions, setResolutionSuggestions] = useState<ResolutionSuggestion[]>([]);
     const [note, setNote] = useState("");
     const [requestMessage, setRequestMessage] = useState("");
     const [resolution, setResolution] = useState("");
@@ -74,14 +84,16 @@ function TechnicianIncident() {
                 return;
             }
 
-            const [incidentData, activityData] = await Promise.all([
+            const [incidentData, activityData, suggestionData] = await Promise.all([
     apiRequest(`${id}`),
-    apiRequest(`${id}/activity`)
+    apiRequest(`${id}/activity`),
+    apiRequest(`${id}/suggested-resolutions`)
 ]);
 
 setIncident(incidentData.incident);
 
 setActivities(activityData.activities || []);
+setResolutionSuggestions(suggestionData.suggestions || []);
         } catch (err) {
             setError(
                 err instanceof Error ? err.message : "Unable to load incident"
@@ -148,7 +160,7 @@ setActivities(activityData.activities || []);
     }
 
     if (loading) {
-        return <div className="technicianIncidentPage">Loading incident...</div>;
+        return <div className="technicianIncidentPage pageLoading">Loading incident...</div>;
     }
 
     if (!incident) {
@@ -220,6 +232,43 @@ setActivities(activityData.activities || []);
                     </div>
                 </div>
             </section>
+
+            {resolutionSuggestions.length > 0 && (
+                <section className="investigationSection resolutionSuggestions">
+                    <h2>Possible Resolutions from Past Incidents</h2>
+                    <p className="suggestionIntro">
+                        Ranked by description, category, and affected service. Review before applying.
+                    </p>
+
+                    <div className="suggestionList">
+                        {resolutionSuggestions.map(suggestion => (
+                            <article className="suggestionCard" key={suggestion.incident_id}>
+                                <div className="suggestionHeading">
+                                    <div>
+                                        <strong>{suggestion.title}</strong>
+                                        <span>
+                                            From incident #{suggestion.incident_id}
+                                            {suggestion.service_name ? ` · ${suggestion.service_name}` : ""}
+                                        </span>
+                                    </div>
+                                    <span className="suggestionScore">
+                                        {suggestion.match_score}% match
+                                    </span>
+                                </div>
+                                <p>{suggestion.resolution_details}</p>
+                                {incident.status === "IN_PROGRESS" && (
+                                    <button
+                                        className="useSuggestionButton"
+                                        onClick={() => setResolution(suggestion.resolution_details)}
+                                    >
+                                        Use as resolution draft
+                                    </button>
+                                )}
+                            </article>
+                        ))}
+                    </div>
+                </section>
+            )}
 
             <section className="investigationSection">
                 <h2>Incident Actions</h2>

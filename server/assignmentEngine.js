@@ -10,6 +10,8 @@ const categorySkillMap = {
     STORAGE: ["STORAGE", "DATABASE"]
 };
 
+const { AssignmentStrategyFactory } = require("./assignmentStrategies");
+
 async function getActiveStrategy(client) {
     const result = await client.query(
         `SELECT strategy
@@ -37,6 +39,7 @@ async function selectTechnician(client, incident, strategy) {
             w.current_workload
 
          FROM technician_profiles tp
+         JOIN users u ON u.user_id = tp.technician_id
 
          LEFT JOIN LATERAL (
              SELECT MAX(proficiency) AS skill_score
@@ -53,32 +56,16 @@ async function selectTechnician(client, incident, strategy) {
          ) w ON TRUE
 
          WHERE tp.is_available = TRUE
+         AND u.role = 'TECHNICIAN'
+         AND u.is_active = TRUE
          AND w.current_workload < tp.max_workload
-
-         ORDER BY
-            CASE
-                WHEN $2 = 'SKILL_BASED'
-                THEN COALESCE(ts.skill_score, 0)
-            END DESC,
-
-            CASE
-                WHEN $2 = 'PRIORITY_BASED' AND $3 = 'P1'
-                THEN tp.experience_years
-            END DESC,
-
-            w.current_workload ASC,
-            tp.experience_years DESC,
-            tp.technician_id ASC`,
-        [skills, strategy, incident.priority]
+         ORDER BY tp.technician_id ASC`,
+        [skills]
     );
 
-    if (strategy === "SKILL_BASED") {
-        return result.rows.find(
-            technician => Number(technician.skill_score) > 0
-        ) || null;
-    }
-
-    return result.rows[0] || null;
+    return AssignmentStrategyFactory
+        .create(strategy)
+        .select(result.rows, incident);
 }
 
 // Rank eligible technicians using the incident's category and severity.

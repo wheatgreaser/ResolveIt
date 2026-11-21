@@ -71,6 +71,35 @@
     line-height: 1.6;
 }
 
+.categorySuggestion {
+    margin-top: 16px;
+    padding: 13px 15px;
+    border: 1px solid #4C3B78;
+    border-radius: 8px;
+    background: #211B32;
+    color: #DDD6FE;
+}
+
+.categorySuggestion strong {
+    color: #C4B5FD;
+    font-size: 13px;
+}
+
+.categorySuggestion strong span {
+    color: #A78BFA;
+    font-weight: 500;
+}
+
+.categorySuggestion p {
+    margin: 7px 0;
+    font-size: 12px;
+}
+
+.categorySuggestion small {
+    color: #A1A1AA;
+    font-size: 11px;
+}
+
 .incidentMetadata {
     display: flex;
     flex-direction: column;

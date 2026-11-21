@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import "./Dashboard.css";
 import NotificationBell from "./NotificationBell";
+import Chatbot from "./Chatbot";
 
 type UserRole = "EMPLOYEE" | "TECHNICIAN" | "ADMIN";
 
@@ -113,6 +114,7 @@ function Dashboard() {
                 {user.role === "ADMIN" && <AdminDashboard />}
 
             </main>
+            <Chatbot />
         </div>
     );
 }
@@ -230,6 +232,7 @@ interface TechnicianIncident {
     incident_id: number;
     title: string;
     description: string;
+    category?: string | null;
     affected_service: string;
     impact: string;
     urgency: string;

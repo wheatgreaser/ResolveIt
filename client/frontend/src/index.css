@@ -1,111 +1,727 @@
 :root {
-  --text: #6b6375;
-  --text-h: #08060d;
-  --bg: #fff;
-  --border: #e5e4e7;
-  --code-bg: #f4f3ec;
-  --accent: #aa3bff;
-  --accent-bg: rgba(170, 59, 255, 0.1);
-  --accent-border: rgba(170, 59, 255, 0.5);
-  --social-bg: rgba(244, 243, 236, 0.5);
-  --shadow:
-    rgba(0, 0, 0, 0.1) 0 10px 15px -3px, rgba(0, 0, 0, 0.05) 0 4px 6px -2px;
-
-  --sans: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --heading: system-ui, 'Segoe UI', Roboto, sans-serif;
-  --mono: ui-monospace, Consolas, monospace;
-
-  font: 18px/145% var(--sans);
-  letter-spacing: 0.18px;
-  color-scheme: light dark;
-  color: var(--text);
-  background: var(--bg);
+  font-family: 'DM Sans', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  color: #e8eaf4;
+  background: #090b12;
   font-synthesis: none;
   text-rendering: optimizeLegibility;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
 
-  @media (max-width: 1024px) {
-    font-size: 16px;
-  }
+  --ink-strong: #f7f7ff;
+  --ink: #e9ecf8;
+  --ink-muted: #a2acc4;
+  --ink-faint: #78849e;
+  --surface: rgba(19, 24, 42, 0.9);
+  --surface-raised: #1b2340;
+  --surface-input: #11182d;
+  --line: rgba(159, 177, 221, 0.16);
+  --line-strong: rgba(156, 132, 255, 0.44);
+  --violet: #9473ff;
+  --violet-bright: #b5a2ff;
+  --cyan: #61e1db;
+  --success: #59e0ab;
+  --danger: #ff8298;
+  --shadow-soft: 0 22px 56px rgba(2, 5, 18, 0.36);
+  --radius-card: 18px;
+  --ease: cubic-bezier(.2, .75, .25, 1);
 }
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    --text: #9ca3af;
-    --text-h: #f3f4f6;
-    --bg: #16171d;
-    --border: #2e303a;
-    --code-bg: #1f2028;
-    --accent: #c084fc;
-    --accent-bg: rgba(192, 132, 252, 0.15);
-    --accent-border: rgba(192, 132, 252, 0.5);
-    --social-bg: rgba(47, 48, 58, 0.5);
-    --shadow:
-      rgba(0, 0, 0, 0.4) 0 10px 15px -3px, rgba(0, 0, 0, 0.25) 0 4px 6px -2px;
-  }
-
-  #social .button-icon {
-    filter: invert(1) brightness(2);
-  }
-}
-
-#root {
-  width: 1126px;
-  max-width: 100%;
-  margin: 0 auto;
-  text-align: center;
-  border-inline: 1px solid var(--border);
-  min-height: 100svh;
-  display: flex;
-  flex-direction: column;
+* {
   box-sizing: border-box;
 }
 
+html {
+  min-width: 320px;
+  background: #090b12;
+  scroll-behavior: smooth;
+  scrollbar-color: #43405c #10131d;
+}
+
 body {
+  min-width: 320px;
+  min-height: 100vh;
   margin: 0;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 8% -12%, rgba(120, 74, 255, 0.23), transparent 38rem),
+    radial-gradient(ellipse at 100% 10%, rgba(31, 191, 195, 0.13), transparent 34rem),
+    radial-gradient(ellipse at 68% 105%, rgba(244, 104, 142, 0.075), transparent 34rem),
+    #090d1b;
+  font-size: 14px;
+  line-height: 1.55;
+  letter-spacing: 0.01em;
+}
+
+body,
+button,
+input,
+select,
+textarea {
+  font-family: 'DM Sans', Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+
+button,
+input,
+select,
+textarea {
+  font-size: inherit;
+}
+
+button {
+  transition: transform 180ms var(--ease), background-color 180ms ease,
+    border-color 180ms ease, box-shadow 180ms ease, color 180ms ease, opacity 180ms ease;
+}
+
+button:hover:not(:disabled) {
+  transform: translateY(-2px);
+}
+
+button:active:not(:disabled) {
+  transform: translateY(0) scale(0.985);
+}
+
+button:disabled {
+  cursor: not-allowed;
+}
+
+input,
+select,
+textarea {
+  color: var(--ink-strong);
+}
+
+input::placeholder,
+textarea::placeholder {
+  color: #717b93;
+}
+
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible,
+button:focus-visible,
+a:focus-visible,
+[role="button"]:focus-visible {
+  outline: 2px solid var(--cyan);
+  outline-offset: 3px;
+}
+
+a {
+  color: var(--violet-bright);
+  text-decoration-color: rgba(178, 155, 255, 0.35);
+  text-underline-offset: 3px;
+}
+
+a:hover {
+  color: #d0c1ff;
+}
+
+#root {
+  width: 100%;
+  min-height: 100vh;
+  margin: 0;
+  text-align: left;
 }
 
 h1,
-h2 {
-  font-family: var(--heading);
-  font-weight: 500;
-  color: var(--text-h);
+h2,
+h3,
+h4 {
+  margin-top: 0;
+  color: var(--ink-strong);
+  font-family: Manrope, 'DM Sans', ui-sans-serif, system-ui, sans-serif;
+  letter-spacing: -0.035em;
 }
 
 h1 {
-  font-size: 56px;
-  letter-spacing: -1.68px;
-  margin: 32px 0;
-  @media (max-width: 1024px) {
-    font-size: 36px;
-    margin: 20px 0;
-  }
+  font-size: clamp(1.65rem, 3vw, 2.15rem);
+  line-height: 1.16;
+  font-weight: 750;
 }
+
 h2 {
-  font-size: 24px;
-  line-height: 118%;
-  letter-spacing: -0.24px;
-  margin: 0 0 8px;
-  @media (max-width: 1024px) {
-    font-size: 20px;
+  font-size: clamp(1.25rem, 2vw, 1.55rem);
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+h3 {
+  font-size: 1.05rem;
+  line-height: 1.35;
+  font-weight: 700;
+}
+
+p {
+  margin-top: 0;
+}
+
+::selection {
+  color: #fff;
+  background: rgba(142, 112, 255, 0.48);
+}
+
+/* Shared ambient canvas and page entrance */
+.dashboardScreen,
+.incidentScreen,
+.myIncidentsScreen,
+.track-page,
+.assignmentPage,
+.classificationPage,
+.technicianIncidentPage,
+.adminIncidentPage,
+.slaPage,
+.slaConfigPage,
+.adminReportsScreen,
+.manageUsersPage,
+.manageTechniciansPage,
+.manageServicesPage {
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 8% -12%, rgba(120, 74, 255, 0.23), transparent 38rem),
+    radial-gradient(ellipse at 100% 10%, rgba(31, 191, 195, 0.13), transparent 34rem),
+    radial-gradient(ellipse at 68% 105%, rgba(244, 104, 142, 0.075), transparent 34rem),
+    #090d1b;
+  animation: page-enter 520ms var(--ease) both;
+}
+
+.loginScreen,
+.registerScreen {
+  min-height: 100vh;
+  color: var(--ink);
+  background:
+    radial-gradient(ellipse at 50% 0%, rgba(112, 76, 218, 0.23), transparent 34rem),
+    radial-gradient(ellipse at 90% 85%, rgba(38, 166, 174, 0.1), transparent 25rem),
+    #090b12;
+}
+
+.dashboardHeader,
+.incidentHeader,
+.myIncidentsHeader,
+.track-header,
+.assignmentHeader,
+.classificationHeader,
+.slaHeader,
+.slaConfigHeader,
+.adminReportsHeader,
+.manageUsersHeader,
+.manageTechniciansHeader,
+.manageServicesHeader,
+.adminIncidentHeader {
+  border-color: var(--line) !important;
+}
+
+.dashboardHeader {
+  position: sticky;
+  z-index: 20;
+  top: 0;
+  background: rgba(12, 15, 24, 0.82);
+  border-bottom: 1px solid var(--line);
+  backdrop-filter: blur(18px);
+}
+
+.dashboardHeader h1,
+.assignmentHeader h1,
+.manageUsersHeader h1,
+.manageTechniciansHeader h1,
+.manageServicesHeader h1,
+.adminIncidentHeader h1,
+.adminReportsHeader h1,
+.slaHeader h1,
+.slaConfigHeader h1,
+.incidentHeader h1,
+.myIncidentsHeader h1,
+.track-header h1 {
+  color: var(--ink-strong);
+  font-family: Manrope, 'DM Sans', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.055em;
+}
+
+.loginCo,
+.registerCo {
+  border: 1px solid rgba(183, 171, 225, 0.2);
+  background: linear-gradient(145deg, rgba(25, 29, 45, 0.94), rgba(15, 18, 29, 0.93));
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.5), inset 0 1px rgba(255, 255, 255, 0.045);
+  backdrop-filter: blur(18px);
+  animation: card-enter 650ms 80ms var(--ease) both;
+}
+
+.heading,
+.registerHeading {
+  color: var(--ink-strong);
+  font-family: Manrope, 'DM Sans', sans-serif;
+  font-weight: 800;
+  letter-spacing: -0.06em;
+  background: linear-gradient(100deg, #f3efff 8%, #bba8ff 54%, #7de1e2 100%);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.welcomeSection {
+  position: relative;
+  overflow: hidden;
+  box-shadow: var(--shadow-soft);
+}
+
+.welcomeSection::after {
+  position: absolute;
+  right: 12%;
+  bottom: -150px;
+  width: 300px;
+  height: 300px;
+  border: 1px solid rgba(201, 184, 255, 0.13);
+  border-radius: 50%;
+  content: '';
+  box-shadow: 0 0 0 34px rgba(201, 184, 255, 0.035), 0 0 0 72px rgba(201, 184, 255, 0.025);
+  pointer-events: none;
+}
+
+.dashboardSection,
+.workflowSection,
+.assignmentSection,
+.classificationCard,
+.investigationHeader,
+.investigationSection,
+.track-card,
+.slaTableSection,
+.slaConfigCard,
+.reportCard,
+.reportPanel,
+.serviceSummaryCard,
+.technicianSummaryCard,
+.userModal,
+.technicianModal,
+.serviceModal,
+.adminIncidentList,
+.adminIncidentDetails,
+.technicianCard,
+.unassignedCard,
+.technicianIncidentCard,
+.emptyIncidents,
+.emptyTechnician,
+.emptyClassification,
+.emptyAssignment {
+  border-color: var(--line) !important;
+  box-shadow: 0 12px 34px rgba(0, 0, 0, 0.13);
+}
+
+.dashboardSection,
+.workflowSection,
+.assignmentSection,
+.investigationSection,
+.track-card,
+.reportCard,
+.reportPanel,
+.slaTableSection,
+.slaConfigCard,
+.classificationCard,
+.technicianCard,
+.unassignedCard,
+.technicianIncidentCard,
+.serviceSummaryCard,
+.technicianSummaryCard {
+  transition: transform 220ms var(--ease), border-color 220ms ease, box-shadow 220ms ease;
+}
+
+.actionCard[role="button"]:hover,
+.strategyCard:hover,
+.technicianCard:hover,
+.unassignedCard:hover,
+.technicianIncidentCard:hover,
+.reportCard:hover,
+.slaConfigCard:hover {
+  transform: translateY(-4px);
+  border-color: var(--line-strong) !important;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.24), 0 0 25px rgba(139, 112, 255, 0.08);
+}
+
+.actionGrid > *,
+.strategyGrid > *,
+.technicianGrid > *,
+.unassignedList > *,
+.classificationList > *,
+.suggestionList > *,
+.reportSummaryGrid > *,
+.reportChartsGrid > * {
+  animation: fade-up 460ms var(--ease) both;
+}
+
+.actionGrid > :nth-child(2),
+.strategyGrid > :nth-child(2),
+.technicianGrid > :nth-child(2),
+.unassignedList > :nth-child(2),
+.classificationList > :nth-child(2),
+.suggestionList > :nth-child(2),
+.reportSummaryGrid > :nth-child(2),
+.reportChartsGrid > :nth-child(2) { animation-delay: 55ms; }
+
+.actionGrid > :nth-child(3),
+.strategyGrid > :nth-child(3),
+.technicianGrid > :nth-child(3),
+.unassignedList > :nth-child(3),
+.classificationList > :nth-child(3),
+.suggestionList > :nth-child(3),
+.reportSummaryGrid > :nth-child(3),
+.reportChartsGrid > :nth-child(3) { animation-delay: 110ms; }
+
+.actionGrid > :nth-child(4),
+.strategyGrid > :nth-child(4),
+.technicianGrid > :nth-child(4),
+.unassignedList > :nth-child(4),
+.classificationList > :nth-child(4),
+.suggestionList > :nth-child(4),
+.reportSummaryGrid > :nth-child(4) { animation-delay: 165ms; }
+
+.actionIcon,
+.userAvatar,
+.technicianAvatar {
+  box-shadow: inset 0 1px rgba(255, 255, 255, 0.12), 0 8px 22px rgba(0, 0, 0, 0.22);
+}
+
+button,
+.loginButton,
+.registerButton,
+.incidentSubmit,
+.classifyButton,
+.saveStrategyButton,
+.manualAssignButton,
+.autoAssignButton,
+.createUserButton,
+.addServiceButton,
+.saveSLAButton {
+  background-image: linear-gradient(110deg, rgba(255, 255, 255, 0.04), transparent 55%);
+}
+
+.loginButton,
+.registerButton,
+.incidentSubmit,
+.classifyButton,
+.saveStrategyButton,
+.manualAssignButton,
+.createUserButton,
+.addServiceButton,
+.saveSLAButton,
+.saveTechnicianButton,
+.addSkillButton {
+  box-shadow: 0 8px 22px rgba(108, 76, 211, 0.2), inset 0 1px rgba(255, 255, 255, 0.16);
+}
+
+input,
+select,
+textarea,
+.assignmentControls select,
+.classificationControls select,
+.incidentForm input,
+.incidentForm select,
+.incidentForm textarea {
+  border-color: rgba(151, 164, 195, 0.2);
+  transition: border-color 180ms ease, box-shadow 180ms ease, background-color 180ms ease;
+}
+
+input:focus,
+select:focus,
+textarea:focus {
+  border-color: rgba(155, 123, 255, 0.78) !important;
+  box-shadow: 0 0 0 3px rgba(155, 123, 255, 0.13), 0 0 20px rgba(155, 123, 255, 0.07);
+}
+
+table {
+  color: var(--ink);
+}
+
+table th {
+  color: #a9b1c6 !important;
+  background: rgba(255, 255, 255, 0.025);
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+table tbody tr {
+  transition: background-color 160ms ease;
+}
+
+table tbody tr:hover {
+  background: rgba(158, 133, 255, 0.075) !important;
+}
+
+.notificationDropdown,
+.userModal,
+.technicianModal,
+.serviceModal {
+  border: 1px solid rgba(173, 160, 219, 0.2) !important;
+  background: rgba(20, 24, 37, 0.97) !important;
+  box-shadow: 0 26px 80px rgba(0, 0, 0, 0.55) !important;
+  backdrop-filter: blur(20px);
+  animation: pop-in 200ms var(--ease) both;
+}
+
+.serviceModalOverlay,
+.technicianModalOverlay,
+.userModalOverlay {
+  background: rgba(4, 6, 12, 0.72) !important;
+  backdrop-filter: blur(7px);
+  animation: page-enter 180ms ease both;
+}
+
+.notificationItem,
+.userFilters input,
+.userFilters select,
+.serviceFilters input,
+.serviceFilters select,
+.technicianSkillRow,
+.suggestionCard,
+.activityItem {
+  border-color: var(--line) !important;
+}
+
+.availability,
+.priorityBadge,
+.statusBadge,
+.priorityLabel,
+.serviceCategory,
+.userStatus,
+.availabilityToggle,
+.slaBadge,
+.status-badge {
+  letter-spacing: 0.035em;
+}
+
+.classificationPage,
+.manageUsersPage,
+.manageTechniciansPage,
+.manageServicesPage,
+.adminReportsScreen,
+.adminIncidentPage,
+.slaPage,
+.slaConfigPage,
+.assignmentPage,
+.incidentScreen,
+.myIncidentsScreen,
+.track-page,
+.technicianIncidentPage {
+  padding-left: max(22px, calc((100vw - 1280px) / 2));
+  padding-right: max(22px, calc((100vw - 1280px) / 2));
+}
+
+.slaContent,
+.assignmentContent,
+.adminIncidentContent,
+.myIncidentsContent {
+  max-width: 1280px;
+}
+
+.slaStats,
+.reportSummaryGrid,
+.serviceSummary,
+.technicianSummary {
+  gap: 16px;
+}
+
+.slaStatCard,
+.reportCard,
+.serviceSummaryCard,
+.technicianSummaryCard {
+  background: linear-gradient(145deg, rgba(25, 30, 46, 0.92), rgba(18, 22, 34, 0.9)) !important;
+}
+
+.slaStatCard strong,
+.reportCard h2,
+.serviceSummaryCard strong,
+.technicianSummaryCard strong {
+  font-family: Manrope, sans-serif;
+  letter-spacing: -0.045em;
+}
+
+.progress-dot,
+.progress-step.completed .progress-dot {
+  box-shadow: 0 0 0 5px rgba(155, 123, 255, 0.11), 0 0 18px rgba(155, 123, 255, 0.26);
+}
+
+.distributionFill,
+.workloadBar div {
+  background-image: linear-gradient(90deg, #8f6fff, #6bd2d5) !important;
+}
+
+.distributionFill {
+  box-shadow: 0 0 14px rgba(107, 210, 213, 0.27);
+}
+
+.distributionFill,
+.workloadBar div {
+  position: relative;
+  overflow: hidden;
+}
+
+.distributionFill::after,
+.workloadBar div::after {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, transparent 25%, rgba(255, 255, 255, 0.28) 48%, transparent 68%);
+  content: '';
+  transform: translateX(-120%);
+  animation: progress-glint 3.8s ease-in-out infinite;
+}
+
+.dashboardLoading,
+.assignmentLoading,
+.adminIncidentLoading,
+.slaConfigLoading {
+  display: flex !important;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+  gap: 18px;
+  color: var(--ink-muted) !important;
+}
+
+.dashboardLoading::before,
+.assignmentLoading::before,
+.adminIncidentLoading::before,
+.slaConfigLoading::before {
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(155, 123, 255, 0.2);
+  border-top-color: var(--violet-bright);
+  border-radius: 50%;
+  content: '';
+  animation: spin 850ms linear infinite;
+}
+
+.pageLoading {
+  display: grid !important;
+  min-height: 100vh;
+  place-content: center;
+  justify-items: center;
+  gap: 16px;
+  color: var(--ink-muted) !important;
+}
+
+.pageLoading::before {
+  width: 30px;
+  height: 30px;
+  border: 2px solid rgba(155, 123, 255, 0.2);
+  border-top-color: var(--violet-bright);
+  border-radius: 50%;
+  content: '';
+  animation: spin 850ms linear infinite;
+}
+
+.activityItem {
+  animation: fade-up 420ms var(--ease) both;
+}
+
+.activityItem:nth-child(2) { animation-delay: 45ms; }
+.activityItem:nth-child(3) { animation-delay: 90ms; }
+.activityItem:nth-child(4) { animation-delay: 135ms; }
+
+.assignmentError,
+.classificationError,
+.investigationError,
+.slaError,
+.reportError,
+.serviceMessage.error,
+.technicianMessage.error,
+.userMessage.error,
+.incidentError,
+.track-error,
+.verificationError,
+.myIncidentsError {
+  border: 1px solid rgba(255, 123, 136, 0.23);
+  box-shadow: 0 8px 24px rgba(255, 80, 100, 0.06);
+}
+
+.assignmentMessage,
+.classificationSuccess,
+.investigationSuccess,
+.serviceMessage.success,
+.technicianMessage.success,
+.userMessage.success,
+.verificationSuccess {
+  border: 1px solid rgba(77, 213, 161, 0.22);
+}
+
+.emptyAssignment,
+.emptyClassification,
+.emptyIncidents,
+.emptyTechnician,
+.adminIncidentEmpty,
+.servicesEmpty,
+.techniciansEmpty,
+.usersEmpty,
+.reportEmpty,
+.slaEmpty {
+  background: linear-gradient(140deg, rgba(23, 28, 43, 0.9), rgba(15, 18, 29, 0.8));
+}
+
+@keyframes page-enter {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes card-enter {
+  from { opacity: 0; transform: translateY(14px) scale(0.99); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes fade-up {
+  from { opacity: 0; filter: blur(3px); }
+  to { opacity: 1; filter: blur(0); }
+}
+
+@keyframes pop-in {
+  from { opacity: 0; transform: translateY(6px) scale(0.985); }
+  to { opacity: 1; transform: translateY(0) scale(1); }
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+@keyframes progress-glint {
+  0%, 55% { transform: translateX(-120%); }
+  100% { transform: translateX(120%); }
+}
+
+@media (max-width: 720px) {
+  body { font-size: 13px; }
+
+  .classificationPage,
+  .manageUsersPage,
+  .manageTechniciansPage,
+  .manageServicesPage,
+  .adminReportsScreen,
+  .adminIncidentPage,
+  .slaPage,
+  .slaConfigPage,
+  .assignmentPage,
+  .incidentScreen,
+  .myIncidentsScreen,
+  .track-page,
+  .technicianIncidentPage {
+    padding-left: 16px;
+    padding-right: 16px;
+  }
+
+  .dashboardContent { width: calc(100% - 32px); }
+
+  .dashboardHeader {
+    padding: 0 16px;
+  }
+
+  .loginCo,
+  .registerCo {
+    padding: 28px 22px;
   }
 }
-p {
-  margin: 0;
-}
 
-code,
-.counter {
-  font-family: var(--mono);
-  display: inline-flex;
-  border-radius: 4px;
-  color: var(--text-h);
-}
-
-code {
-  font-size: 15px;
-  line-height: 135%;
-  padding: 4px 8px;
-  background: var(--code-bg);
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    scroll-behavior: auto !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

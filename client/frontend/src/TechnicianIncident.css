@@ -63,6 +63,64 @@
     font-size: 13px;
 }
 
+.suggestionIntro {
+    color: #94A3B8;
+    margin: 4px 0 18px;
+}
+
+.suggestionList {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.suggestionCard {
+    padding: 16px;
+    border: 1px solid #3E3557;
+    border-radius: 9px;
+    background: #1B1C2A;
+}
+
+.suggestionHeading {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 12px;
+}
+
+.suggestionHeading > div {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+}
+
+.suggestionHeading > div > span {
+    color: #94A3B8;
+    font-size: 12px;
+}
+
+.suggestionScore {
+    color: #C4B5FD;
+    font-size: 12px;
+    white-space: nowrap;
+}
+
+.suggestionCard > p {
+    color: #CBD5E1;
+    line-height: 1.6;
+    white-space: pre-wrap;
+}
+
+.useSuggestionButton {
+    background: #29213F;
+    color: #DDD6FE;
+    border: 1px solid #6D5A9C;
+    border-radius: 7px;
+    padding: 9px 12px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
 .investigationActions {
     display: flex;
     flex-direction: column;

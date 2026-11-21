@@ -38,6 +38,9 @@ function ReportIncident() {
 
     const [error, setError] = useState("");
     const [loading, setLoading] = useState(false);
+    const [triageLoading, setTriageLoading] = useState(false);
+    const [triageSuggestion, setTriageSuggestion] = useState("");
+    const [triageError, setTriageError] = useState("");
 
     // Fetch available services
     useEffect(() => {
@@ -95,6 +98,37 @@ function ReportIncident() {
             ...prev,
             [e.target.name]: e.target.value
         }));
+        setTriageSuggestion("");
+    }
+
+    async function getTriageSuggestion() {
+        setTriageError("");
+        setTriageSuggestion("");
+        const token = localStorage.getItem("token");
+        if (!token) {
+            navigate("/");
+            return;
+        }
+        setTriageLoading(true);
+        try {
+            const selectedService = services.find(service => String(service.service_id) === formData.service_id);
+            const response = await fetch("http://localhost:8080/chatbot/triage", {
+                method: "POST",
+                headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+                body: JSON.stringify({
+                    title: formData.title,
+                    description: formData.description,
+                    service: selectedService?.service_name || ""
+                })
+            });
+            const data = await response.json();
+            if (!response.ok) throw new Error(data.message || "Unable to get triage suggestions.");
+            setTriageSuggestion(data.suggestion);
+        } catch (err) {
+            setTriageError(err instanceof Error ? err.message : "Unable to get triage suggestions.");
+        } finally {
+            setTriageLoading(false);
+        }
     }
 
     async function handleSubmit(e: FormEvent<HTMLFormElement>) {
@@ -190,6 +224,29 @@ function ReportIncident() {
                         required
                     />
                 </div>
+
+                <section className="triageCard" aria-labelledby="triageTitle">
+                    <div className="triageHeading">
+                        <div>
+                            <span className="triageEyebrow">AI ASSIST</span>
+                            <h3 id="triageTitle">Get a quick triage</h3>
+                            <p>Review likely category, suggested impact and urgency, and safe first steps.</p>
+                        </div>
+                        <span className="triageSpark">✦</span>
+                    </div>
+                    <button type="button" className="triageButton" onClick={getTriageSuggestion}
+                        disabled={triageLoading || !formData.title.trim() || !formData.description.trim()}>
+                        {triageLoading ? "Reviewing your issue…" : "Suggest next steps"}
+                    </button>
+                    {triageError && <p className="incidentError" role="alert">{triageError}</p>}
+                    {triageSuggestion && (
+                        <div className="triageSuggestion" aria-live="polite">
+                            <strong>Suggested triage</strong>
+                            <p>{triageSuggestion}</p>
+                            <span>Suggestions are AI-generated. Check impact and urgency before submitting.</span>
+                        </div>
+                    )}
+                </section>
 
                 <div className="incidentInputGroup">
                     <label htmlFor="service_id">

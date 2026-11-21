@@ -71,7 +71,7 @@ function MyIncidents() {
     }
 
     if (loading) {
-        return <div className="myIncidentsScreen">Loading incidents...</div>;
+        return <div className="myIncidentsScreen pageLoading">Loading incidents...</div>;
     }
 
     return (

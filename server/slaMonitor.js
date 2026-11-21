@@ -124,11 +124,14 @@ await client.query(`
 
         UNION
 
-        -- Notify admins about breaches
+        -- Notify admins about approaching deadlines and breaches
         SELECT u.user_id
         FROM users u
         WHERE u.role = 'ADMIN'
+          AND u.is_active = TRUE
           AND e.event_type IN (
+              'RESPONSE_AT_RISK',
+              'RESOLUTION_AT_RISK',
               'RESPONSE_BREACHED',
               'RESOLUTION_BREACHED'
           )

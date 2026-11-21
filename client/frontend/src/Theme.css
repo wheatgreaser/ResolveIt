@@ -1,0 +1,278 @@
+/* Shared warm ivory, forest, and rust palette for every application screen. */
+:root {
+  --ink-strong: #183c32;
+  --ink: #25483b;
+  --ink-muted: #64776c;
+  --ink-faint: #7e8d81;
+  --surface: #fffdf8;
+  --surface-raised: #f8f7f1;
+  --surface-input: #f8f7f1;
+  --line: #d8dfd3;
+  --line-strong: rgba(36, 87, 68, .38);
+  --violet: #245744;
+  --violet-bright: #245744;
+  --cyan: #c86b45;
+  --success: #397454;
+  --danger: #a83d31;
+  --shadow-soft: 0 18px 48px rgba(34, 51, 39, .1);
+}
+
+html,
+body {
+  color: #25483b !important;
+  background: #f4f0e7 !important;
+  scrollbar-color: #aab9a9 #f4f0e7;
+}
+
+body {
+  background-image: none !important;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen, .chatbotPanel
+) * {
+  background-image: none !important;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen, .chatbotPanel
+) * {
+  color: #25483b !important;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen
+) {
+  color: #25483b !important;
+  background: #f4f0e7 !important;
+  background-image: none !important;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen
+) :where(h1, h2, h3, h4, p, label, span, strong, small, th, td, li, a) {
+  color: #25483b;
+}
+
+:where(
+  .dashboardSection, .workflowSection, .assignmentSection,
+  .actionCard, .welcomeSection, .workflowItem, .strategyCard,
+  .suggestionCard,
+  .classificationCard, .investigationHeader, .investigationSection,
+  .track-card, .slaTableSection, .slaConfigCard, .reportCard,
+  .reportPanel, .serviceSummaryCard, .technicianSummaryCard,
+  .userModal, .technicianModal, .serviceModal, .adminIncidentList,
+  .adminIncidentDetails, .technicianCard, .unassignedCard,
+  .technicianIncidentCard, .emptyIncidents, .emptyTechnician,
+  .emptyClassification, .emptyAssignment, .slaStatCard,
+  .adminIncidentItem, .detailsBlock, .usersTableContainer,
+  .servicesTableContainer, .techniciansTableContainer,
+  .registerCo, .chatbotPanel
+) {
+  color: #25483b !important;
+  border-color: #d8dfd3 !important;
+  background: #fffdf8 !important;
+  background-image: none !important;
+  box-shadow: 0 12px 34px rgba(34, 51, 39, .08) !important;
+}
+
+:where(
+  .dashboardHeader, .incidentHeader, .myIncidentsHeader, .track-header,
+  .assignmentHeader, .classificationHeader, .slaHeader, .slaConfigHeader,
+  .adminReportsHeader, .manageUsersHeader, .manageTechniciansHeader,
+  .manageServicesHeader, .adminIncidentHeader
+) {
+  color: #183c32 !important;
+  border-color: #d8dfd3 !important;
+  background: #f4f0e7 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+}
+
+:where(
+  .dashboardHeader h1, .assignmentHeader h1, .manageUsersHeader h1,
+  .manageTechniciansHeader h1, .manageServicesHeader h1,
+  .adminIncidentHeader h1, .adminReportsHeader h1, .slaHeader h1,
+  .slaConfigHeader h1, .incidentHeader h1, .myIncidentsHeader h1,
+  .track-header h1, h1, h2, h3, h4
+) {
+  color: #183c32 !important;
+  background: none !important;
+  background-image: none !important;
+  -webkit-text-fill-color: #183c32 !important;
+}
+
+a, a:hover, .cardLink, .incidentReference, .incidentId, .workflowNumber,
+.classificationCount, .sectionCount, .activityType, .triageEyebrow,
+.triageSpark, .storyEyebrow {
+  color: #a94f2e !important;
+}
+
+button, .loginButton, .registerButton, .incidentSubmit, .classifyButton,
+.saveStrategyButton, .manualAssignButton, .autoAssignButton,
+.createUserButton, .addServiceButton, .saveSLAButton,
+.saveTechnicianButton, .addSkillButton, .chatbotLauncher,
+.chatbotSendButton, .dashboardActionButton {
+  border-color: #245744 !important;
+  color: #fffdf8 !important;
+  background: #245744 !important;
+  background-image: none !important;
+  box-shadow: 0 7px 18px rgba(36, 87, 68, .15) !important;
+}
+
+button:hover:not(:disabled), .loginButton:hover:not(:disabled),
+.registerButton:hover:not(:disabled), .incidentSubmit:hover:not(:disabled),
+.classifyButton:hover:not(:disabled), .saveStrategyButton:hover:not(:disabled),
+.manualAssignButton:hover:not(:disabled), .autoAssignButton:hover:not(:disabled),
+.createUserButton:hover:not(:disabled), .addServiceButton:hover:not(:disabled),
+.saveSLAButton:hover:not(:disabled), .saveTechnicianButton:hover:not(:disabled),
+.addSkillButton:hover:not(:disabled), .chatbotLauncher:hover:not(:disabled) {
+  color: #fffdf8 !important;
+  background: #173d31 !important;
+  background-image: none !important;
+}
+
+:where(input, select, textarea, .assignmentControls select,
+  .classificationControls select, .incidentForm input,
+  .incidentForm select, .incidentForm textarea) {
+  border-color: #d8dfd3 !important;
+  color: #183c32 !important;
+  background: #f8f7f1 !important;
+  background-image: none !important;
+  box-shadow: none;
+}
+
+:where(input, select, textarea):focus {
+  border-color: #245744 !important;
+  color: #183c32 !important;
+  background: #fffdf8 !important;
+  box-shadow: 0 0 0 3px rgba(36, 87, 68, .12) !important;
+}
+
+input::placeholder, textarea::placeholder { color: #98a49a !important; }
+table { color: #25483b !important; }
+table th { color: #435d51 !important; background: #f1eee5 !important; }
+table tbody tr:hover { background: #f4f0e7 !important; }
+
+:where(.selectedStrategy, .selectedAdminIncident, .active, .selected) {
+  border-color: #245744 !important;
+  background: #e8eee5 !important;
+  box-shadow: 0 0 0 1px rgba(36, 87, 68, .12) !important;
+}
+
+:where(.statusBadge, .priorityBadge, .priorityTag, .slaBadge,
+  .availability, .userStatus, .serviceCategory, .status-badge) {
+  border-color: #d8dfd3 !important;
+  color: #435d51 !important;
+  background: #f1eee5 !important;
+  background-image: none !important;
+}
+
+:where(.available, .verificationSuccess, .classificationSuccess,
+  .investigationSuccess, .serviceMessage.success, .technicianMessage.success,
+  .userMessage.success, .assignmentMessage, .statusBadge.open,
+  .status-badge.open, .status-badge.resolved) {
+  border-color: rgba(57, 116, 84, .25) !important;
+  color: #326746 !important;
+  background: #e8f0e6 !important;
+}
+
+:where(.unavailable, .errorMessage, .assignmentError, .classificationError,
+  .investigationError, .slaError, .reportError, .serviceMessage.error,
+  .technicianMessage.error, .userMessage.error, .incidentError,
+  .track-error, .verificationError, .myIncidentsError,
+  .adminIncidentError, .priorityBadge.P1, .priorityTag.critical) {
+  border-color: rgba(168, 61, 49, .24) !important;
+  color: #a83d31 !important;
+  background: #f8e9e3 !important;
+}
+
+:where(.priorityBadge.P2, .priorityTag.high) {
+  color: #a94f2e !important;
+  background: #f5e9de !important;
+}
+
+:where(.priorityBadge.P3, .priorityTag.medium) {
+  color: #79602b !important;
+  background: #f3efdf !important;
+}
+
+:where(.priorityBadge.P4, .priorityTag.low) {
+  color: #397454 !important;
+  background: #e8f0e6 !important;
+}
+
+:where(.notificationDropdown, .userModal, .technicianModal, .serviceModal,
+  .chatbotPanel, .chatbotMessages, .chatMessage, .triageSuggestion) {
+  border-color: #d8dfd3 !important;
+  color: #25483b !important;
+  background: #fffdf8 !important;
+  background-image: none !important;
+  backdrop-filter: none !important;
+}
+
+:where(.notificationItem, .activityItem, .workflowItem, .suggestionCard,
+  .technicianSkillRow, .userFilters input, .userFilters select,
+  .serviceFilters input, .serviceFilters select) {
+  border-color: #d8dfd3 !important;
+}
+
+:where(.distributionFill, .workloadBar div, .progress-dot,
+  .progress-step.completed .progress-dot) {
+  border-color: #245744 !important;
+  background: #397454 !important;
+  background-image: none !important;
+  box-shadow: 0 0 0 4px rgba(57, 116, 84, .1) !important;
+}
+
+:where(.welcomeDecoration, .purpleIcon, .blueIcon, .greenIcon,
+  .userAvatar, .technicianAvatar, .actionIcon, .chatbotAvatar) {
+  border-color: #d8dfd3 !important;
+  color: #245744 !important;
+  background: #e8eee5 !important;
+  background-image: none !important;
+}
+
+:where(.storyNoteMark, .chatbotHeader) {
+  border-color: #d8dfd3 !important;
+  color: #435d51 !important;
+  background: #f1eee5 !important;
+  background-image: none !important;
+}
+
+:where(.dashboardLoading, .assignmentLoading, .adminIncidentLoading,
+  .slaConfigLoading, .pageLoading) { color: #64776c !important; }
+
+:where(.emptyAssignment, .emptyClassification, .emptyIncidents,
+  .emptyTechnician, .adminIncidentEmpty, .servicesEmpty,
+  .techniciansEmpty, .usersEmpty, .reportEmpty, .slaEmpty,
+  .slaConfigEmpty) {
+  border-color: #d8dfd3 !important;
+  color: #64776c !important;
+  background: #f8f7f1 !important;
+  background-image: none !important;
+}
+
+::selection { color: #fffdf8 !important; background: #245744 !important; }
+
+.loginStory h2 {
+  color: #fbf8ee !important;
+  -webkit-text-fill-color: #fbf8ee !important;
+}

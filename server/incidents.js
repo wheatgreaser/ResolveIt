@@ -9,6 +9,9 @@ const {
     selectTechnician,
     recommendTechnicians
 } = require("./assignmentEngine");
+const { suggestCategory } = require("./categorySuggester");
+const { suggestResolutions } = require("./resolutionSuggester");
+const { IncidentFactory, DomainValidationError } = require("./domain/Incident");
 
 async function isTechnician(userId) {
     const result = await pool.query(
@@ -310,17 +313,26 @@ router.get("/admin/unclassified", authenticate, async (req, res) => {
                 i.title,
                 i.description,
                 i.affected_service,
+                s.category AS service_category,
                 i.impact,
                 i.urgency,
                 i.created_at,
                 u.username AS reporter_name
             FROM incidents i
             JOIN users u ON i.reporter_id = u.user_id
+            LEFT JOIN services s ON i.service_id = s.service_id
             WHERE i.status = 'NEW'
             ORDER BY i.created_at ASC
         `);
 
-        res.json(result.rows);
+        res.json(result.rows.map(incident => ({
+            ...incident,
+            category_suggestion: suggestCategory({
+                title: incident.title,
+                description: incident.description,
+                serviceCategory: incident.service_category
+            })
+        })));
 
     } catch (error) {
         console.error("Error fetching unclassified incidents:", error);
@@ -2610,6 +2622,58 @@ router.get("/admin/reports/overview", authenticate, async (req, res) => {
 });
 
 
+router.get("/:id/suggested-resolutions", authenticate, async (req, res) => {
+    try {
+        const incidentId = Number(req.params.id);
+        if (!Number.isInteger(incidentId) || incidentId <= 0) {
+            return res.status(400).json({ message: "Invalid incident ID" });
+        }
+
+        const targetResult = await pool.query(
+            `SELECT incident_id, reporter_id, assigned_technician_id,
+                    service_id, category, title, description
+             FROM incidents
+             WHERE incident_id = $1`,
+            [incidentId]
+        );
+        if (targetResult.rows.length === 0) {
+            return res.status(404).json({ message: "Incident not found" });
+        }
+
+        const incident = targetResult.rows[0];
+        if (
+            Number(incident.assigned_technician_id) !== Number(req.user.user_id) &&
+            !(await isAdmin(req.user.user_id))
+        ) {
+            return res.status(403).json({
+                message: "Only the assigned technician or an administrator can view suggestions"
+            });
+        }
+
+        const historyResult = await pool.query(
+            `SELECT i.incident_id, i.title, i.description, i.category,
+                    i.service_id, i.resolution_details,
+                    s.service_name
+             FROM incidents i
+             LEFT JOIN services s ON s.service_id = i.service_id
+             WHERE i.incident_id <> $1
+               AND i.status IN ('RESOLVED', 'VERIFIED', 'CLOSED')
+               AND i.resolution_details IS NOT NULL
+               AND BTRIM(i.resolution_details) <> ''
+             ORDER BY i.updated_at DESC
+             LIMIT 300`,
+            [incidentId]
+        );
+
+        res.json({
+            suggestions: suggestResolutions(incident, historyResult.rows)
+        });
+    } catch (err) {
+        console.error("SUGGESTED RESOLUTIONS ERROR:", err);
+        res.status(500).json({ message: "Unable to suggest historical resolutions" });
+    }
+});
+
 router.get("/:id", authenticate, async (req, res) => {
     try {
         const incidentId = req.params.id;
@@ -2688,20 +2752,10 @@ router.post("/", authenticate, async (req, res) => {
             urgency
         } = req.body;
 
-        if (
-            typeof title !== "string" ||
-            !title.trim() ||
-            title.length > 200 ||
-            typeof description !== "string" ||
-            !description.trim() ||
-            !service_id ||
-            !Number.isInteger(Number(service_id)) ||
-            Number(service_id) <= 0 ||
-            !["LOW", "MEDIUM", "HIGH"].includes(impact) ||
-            !["LOW", "MEDIUM", "HIGH"].includes(urgency)
-        ) {
+        const serviceId = Number(service_id);
+        if (!Number.isInteger(serviceId) || serviceId <= 0) {
             return res.status(400).json({
-                message: "Invalid incident details"
+                message: "Invalid service ID"
             });
         }
 
@@ -2730,7 +2784,7 @@ router.post("/", authenticate, async (req, res) => {
              FROM services
              WHERE service_id = $1
              AND is_active = TRUE`,
-            [service_id]
+            [serviceId]
         );
 
         if (serviceResult.rows.length === 0) {
@@ -2739,7 +2793,25 @@ router.post("/", authenticate, async (req, res) => {
             });
         }
 
-        const serviceName = serviceResult.rows[0].service_name;
+        let incident;
+        try {
+            incident = IncidentFactory.createReportedIncident({
+                reporterId,
+                title,
+                description,
+                serviceId,
+                affectedService: serviceResult.rows[0].service_name,
+                impact,
+                urgency
+            });
+        } catch (err) {
+            if (err instanceof DomainValidationError) {
+                return res.status(400).json({ message: err.message });
+            }
+            throw err;
+        }
+
+        const record = incident.toPersistenceRecord();
 
         const result = await pool.query(
             `INSERT INTO incidents
@@ -2748,13 +2820,13 @@ router.post("/", authenticate, async (req, res) => {
              VALUES ($1, $2, $3, $4, $5, $6, $7)
              RETURNING *`,
             [
-                reporterId,
-                title.trim(),
-                description.trim(),
-                service_id,
-                serviceName,
-                impact,
-                urgency
+                record.reporterId,
+                record.title,
+                record.description,
+                record.serviceId,
+                record.affectedService,
+                record.impact,
+                record.urgency
             ]
         );
 

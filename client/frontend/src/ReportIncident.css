@@ -96,6 +96,26 @@
     gap: 18px;
 }
 
+.triageCard {
+    margin: 0 0 24px;
+    padding: 18px;
+    border: 1px solid rgba(155, 123, 255, .32);
+    border-radius: 13px;
+    background: linear-gradient(130deg, rgba(115, 82, 197, .13), rgba(34, 159, 166, .07));
+}
+
+.triageHeading { display: flex; justify-content: space-between; gap: 12px; }
+.triageEyebrow { color: #b29bff; font-size: 10px; font-weight: 700; letter-spacing: .12em; }
+.triageHeading h3 { margin: 4px 0; font-size: 17px; }
+.triageHeading p { margin: 0 0 14px; color: #a8b0c3; font-size: 12px; }
+.triageSpark { color: #b29bff; font-size: 24px; }
+.triageButton { padding: 9px 13px; border: 1px solid rgba(178,155,255,.4); border-radius: 8px; color: #eee9ff; background: rgba(139,92,246,.2); font-weight: 600; cursor: pointer; }
+.triageButton:disabled { opacity: .5; cursor: not-allowed; }
+.triageSuggestion { margin-top: 14px; padding: 13px; border-radius: 9px; background: rgba(10,13,21,.65); }
+.triageSuggestion strong { color: #e9e2ff; font-size: 13px; }
+.triageSuggestion p { margin: 8px 0; color: #e1e5ef; font-size: 13px; white-space: pre-wrap; line-height: 1.6; }
+.triageSuggestion span { color: #8f99ae; font-size: 10px; }
+
 .incidentSubmit {
     width: 100%;
     height: 46px;

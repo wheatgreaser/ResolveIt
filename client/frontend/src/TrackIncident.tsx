@@ -190,7 +190,7 @@ function TrackIncident() {
         }
     }
 
-    if (loading) return <p>Loading incident...</p>;
+    if (loading) return <p className="pageLoading">Loading incident...</p>;
     if (error) return <p className="track-error">{error}</p>;
     if (!incident) return <p>Incident not found.</p>;
 

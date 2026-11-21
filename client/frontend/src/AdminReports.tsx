@@ -112,7 +112,7 @@ function AdminReports() {
 
     if (loading) {
         return (
-            <div className="adminReportsScreen">
+            <div className="adminReportsScreen pageLoading">
                 <p>Loading reports...</p>
             </div>
         );
