@@ -54,7 +54,8 @@ function Register() {
         return;
       }
 
-      navigate("/profile");
+      localStorage.setItem("token", data.token);
+      navigate("/dashboard");
 
     } catch (err) {
       console.error(err);

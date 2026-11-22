@@ -36,10 +36,30 @@ interface IncidentDetails extends Incident {
     closure_notes: string | null;
 }
 
+interface RelatedIncident {
+    incident_id: number;
+    title: string;
+    status: string;
+    relationship_type: "RELATED" | "POSSIBLE_DUPLICATE";
+    match_score: number;
+}
+
+interface Escalation {
+    escalation_id: number;
+    related_incident_id: number;
+    related_title: string;
+    reason: string;
+    match_score: number;
+    created_at: string;
+}
+
 function AdminIncident() {
     const navigate = useNavigate();
 
     const [incidents, setIncidents] = useState<Incident[]>([]);
+    const [searchTerm, setSearchTerm] = useState("");
+    const [statusFilter, setStatusFilter] = useState("ALL");
+    const [priorityFilter, setPriorityFilter] = useState("ALL");
     const [selectedIncident, setSelectedIncident] =
         useState<IncidentDetails | null>(null);
 
@@ -51,6 +71,22 @@ function AdminIncident() {
     const [error, setError] = useState("");
     const [message, setMessage] = useState("");
     const [activities, setActivities] = useState<Activity[]>([]);
+    const [relatedIncidents, setRelatedIncidents] = useState<RelatedIncident[]>([]);
+    const [escalations, setEscalations] = useState<Escalation[]>([]);
+
+    const normalizedSearch = searchTerm.trim().toLowerCase();
+    const filteredIncidents = incidents.filter(incident => {
+        const matchesSearch = !normalizedSearch || [
+            String(incident.incident_id),
+            incident.title,
+            incident.reporter_name,
+            incident.technician_name || ""
+        ].some(value => value.toLowerCase().includes(normalizedSearch));
+        const matchesStatus = statusFilter === "ALL" || incident.status === statusFilter;
+        const matchesPriority = priorityFilter === "ALL"
+            || (priorityFilter === "UNPRIORITIZED" ? !incident.priority : incident.priority === priorityFilter);
+        return matchesSearch && matchesStatus && matchesPriority;
+    });
 
     async function apiRequest(path: string, options: RequestInit = {}) {
         const token = localStorage.getItem("token");
@@ -106,6 +142,9 @@ function AdminIncident() {
             setClosureNotes("");
             const activityData = await apiRequest(`/${incidentId}/activity`);
             setActivities(activityData.activities || []);
+            const relationData = await apiRequest(`/${incidentId}/relations`);
+            setRelatedIncidents(relationData.related_incidents || []);
+            setEscalations(relationData.escalations || []);
 
         } catch (err) {
             setError(
@@ -202,14 +241,68 @@ function AdminIncident() {
                 <div className="adminIncidentLayout">
 
                     <section className="adminIncidentList">
-                        <h3>All Incidents ({incidents.length})</h3>
+                        <div className="incidentListHeading">
+                            <h3>All Incidents</h3>
+                            <span>{filteredIncidents.length} of {incidents.length}</span>
+                        </div>
+
+                        <div className="incidentFilters">
+                            <input
+                                type="search"
+                                value={searchTerm}
+                                onChange={event => setSearchTerm(event.target.value)}
+                                placeholder="Search title, ID, reporter, technician"
+                                aria-label="Search incidents"
+                            />
+                            <div className="incidentFilterRow">
+                                <select
+                                    value={statusFilter}
+                                    onChange={event => setStatusFilter(event.target.value)}
+                                    aria-label="Filter incidents by status"
+                                >
+                                    <option value="ALL">All statuses</option>
+                                    {["NEW", "CLASSIFIED", "ASSIGNED", "ACKNOWLEDGED", "IN_PROGRESS", "WAITING_FOR_USER", "RESOLVED", "VERIFIED", "CLOSED"].map(status => (
+                                        <option key={status} value={status}>{status.replaceAll("_", " ")}</option>
+                                    ))}
+                                </select>
+                                <select
+                                    value={priorityFilter}
+                                    onChange={event => setPriorityFilter(event.target.value)}
+                                    aria-label="Filter incidents by priority"
+                                >
+                                    <option value="ALL">All priorities</option>
+                                    <option value="P1">P1 · Critical</option>
+                                    <option value="P2">P2 · High</option>
+                                    <option value="P3">P3 · Medium</option>
+                                    <option value="P4">P4 · Low</option>
+                                    <option value="UNPRIORITIZED">Unprioritized</option>
+                                </select>
+                            </div>
+                            {(searchTerm || statusFilter !== "ALL" || priorityFilter !== "ALL") && (
+                                <button
+                                    className="clearIncidentFilters"
+                                    type="button"
+                                    onClick={() => {
+                                        setSearchTerm("");
+                                        setStatusFilter("ALL");
+                                        setPriorityFilter("ALL");
+                                    }}
+                                >
+                                    Clear filters
+                                </button>
+                            )}
+                        </div>
 
                         {incidents.length === 0 ? (
                             <p className="adminIncidentEmpty">
                                 No incidents found.
                             </p>
+                        ) : filteredIncidents.length === 0 ? (
+                            <p className="adminIncidentEmpty">
+                                No incidents match your search and filters.
+                            </p>
                         ) : (
-                            incidents.map(incident => (
+                            filteredIncidents.map(incident => (
                                 <button
                                     className={`adminIncidentItem ${
                                         selectedIncident?.incident_id ===
@@ -322,6 +415,35 @@ function AdminIncident() {
                                 <div className="detailsBlock">
                                     <h3>Affected Service</h3>
                                     <p>{selectedIncident.affected_service}</p>
+                                </div>
+
+                                <div className="detailsBlock relatedIncidentBlock">
+                                    <h3>Related Incidents</h3>
+                                    {relatedIncidents.length === 0 ? (
+                                        <p>No related active incidents were found.</p>
+                                    ) : (
+                                        <div className="relatedIncidentList">
+                                            {relatedIncidents.map(related => (
+                                                <button
+                                                    key={related.incident_id}
+                                                    className="relatedIncidentLink"
+                                                    onClick={() => loadDetails(related.incident_id)}
+                                                >
+                                                    <span>
+                                                        #{related.incident_id} · {related.title}
+                                                        {related.relationship_type === "POSSIBLE_DUPLICATE" && " · Possible duplicate"}
+                                                    </span>
+                                                    <strong>{related.match_score}% match</strong>
+                                                </button>
+                                            ))}
+                                        </div>
+                                    )}
+                                    {escalations.map(escalation => (
+                                        <p className="incidentEscalation" key={escalation.escalation_id}>
+                                            Escalated for review: possible duplicate of #{escalation.related_incident_id}
+                                            {` (${escalation.match_score}% match).`}
+                                        </p>
+                                    ))}
                                 </div>
 
                                 {selectedIncident.resolution_details && (

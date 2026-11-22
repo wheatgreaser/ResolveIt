@@ -6,6 +6,31 @@ const API_URL = 'https://gen.pollinations.ai/v1/chat/completions';
 const MAX_MESSAGES = 12;
 const MAX_MESSAGE_LENGTH = 2000;
 
+function getGenericReply(message) {
+    const text = message.toLowerCase();
+
+    if (/hack|phish|virus|malware|stolen|breach|compromis/.test(text)) {
+        return 'This may be a security issue. Stop interacting with the affected account or device and contact your IT team right away. Do not share passwords or verification codes here.';
+    }
+    if (/password|login|sign in|account|locked/.test(text)) {
+        return 'For sign-in problems, check your username and try the official password reset process. If the account is locked or the issue continues, contact your IT team. Never share your password or verification code.';
+    }
+    if (/wifi|wi-fi|internet|network|vpn|connection/.test(text)) {
+        return 'For a connection issue, check whether other sites or services are affected, then reconnect to your network or VPN. If it still fails, note when it started and contact your IT team.';
+    }
+    if (/printer|printing|print/.test(text)) {
+        return 'For a printing issue, check that the printer is powered on, connected, and has paper. Clear any stuck jobs and try again. If it persists, contact your IT team with the printer name and any error shown.';
+    }
+    if (/slow|frozen|freeze|crash|restart|computer|laptop/.test(text)) {
+        return 'Try saving your work, closing and reopening the affected app, and restarting your device if it is safe to do so. If the problem returns, contact your IT team and include any error message.';
+    }
+    if (/app|software|error|install|update|website/.test(text)) {
+        return 'Try closing and reopening the app, then check whether the issue continues. Note the exact error and what you were doing when it appeared so your IT team can investigate.';
+    }
+
+    return 'I can offer basic troubleshooting, but I may need more detail. What device or app is affected, what were you trying to do, and what happened? If work is blocked, report it to your IT team.';
+}
+
 function validateTriageInput(body) {
     const { title, description } = body || {};
     if (typeof title !== 'string' || typeof description !== 'string' ||
@@ -87,58 +112,10 @@ router.post('/triage', authenticate, async (req, res) => {
 });
 
 router.post('/', authenticate, async (req, res) => {
-    const apiKey = process.env.POLLINATIONS_API_KEY;
-    if (!apiKey) {
-        return res.status(503).json({
-            message: 'The AI assistant is not configured yet. Add POLLINATIONS_API_KEY to the server environment.'
-        });
-    }
-
     const validation = validateChatMessages(req.body?.messages);
     if (validation.error) return res.status(400).json({ message: validation.error });
-    const safeMessages = validation.messages;
-
-    try {
-        const upstream = await fetch(API_URL, {
-            method: 'POST',
-            headers: {
-                Authorization: `Bearer ${apiKey}`,
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify({
-                model: process.env.POLLINATIONS_MODEL || 'openai/gpt-4o-mini',
-                messages: [
-                    {
-                        role: 'system',
-                        content: 'You are ResolveIt, a practical IT support assistant. Help users understand and troubleshoot common workplace technology issues. Ask focused questions when details are missing, give safe step-by-step guidance, and explain when an issue should be reported to the IT team. Never request passwords, authentication codes, or sensitive company data. Do not claim to access ResolveIt incidents or systems. Keep answers clear and concise.'
-                    },
-                    ...safeMessages
-                ],
-                temperature: 0.4,
-                max_tokens: 700
-            }),
-            signal: AbortSignal.timeout(30000)
-        });
-
-        if (!upstream.ok) {
-            console.error('Pollinations API returned status:', upstream.status);
-            return res.status(upstream.status === 429 ? 503 : 502).json({
-                message: upstream.status === 429
-                    ? 'The free AI service is busy. Please try again in a moment.'
-                    : 'The AI service could not answer right now. Please try again.'
-            });
-        }
-
-        const data = await upstream.json();
-        const reply = data.choices?.[0]?.message?.content;
-        if (typeof reply !== 'string' || !reply.trim()) {
-            return res.status(502).json({ message: 'The AI service returned an empty reply.' });
-        }
-        res.json({ reply: reply.trim() });
-    } catch (error) {
-        console.error('Chatbot request failed:', error.name || 'UnknownError');
-        res.status(502).json({ message: 'Unable to reach the AI service. Please try again.' });
-    }
+    const lastMessage = validation.messages[validation.messages.length - 1];
+    res.json({ reply: getGenericReply(lastMessage.content) });
 });
 
 module.exports = router;

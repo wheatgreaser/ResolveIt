@@ -71,6 +71,54 @@
     margin-top: 0;
 }
 
+.incidentListHeading {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 10px;
+}
+
+.incidentListHeading span {
+    color: #64776c;
+    font-size: 12px;
+}
+
+.incidentFilters {
+    display: grid;
+    gap: 9px;
+    margin: 14px 0 18px;
+}
+
+.incidentFilters input,
+.incidentFilters select {
+    width: 100%;
+    min-width: 0;
+    height: 40px;
+    padding: 0 11px;
+    border: 1px solid #cbd5c8;
+    border-radius: 8px;
+    color: #183c32;
+    background: #f8f7f1;
+    font: inherit;
+    font-size: 12px;
+}
+
+.incidentFilterRow {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.clearIncidentFilters {
+    justify-self: start;
+    padding: 5px 0;
+    border: 0;
+    color: #934326;
+    background: transparent;
+    font-size: 12px;
+    cursor: pointer;
+}
+
 .adminIncidentItem {
     display: block;
     width: 100%;

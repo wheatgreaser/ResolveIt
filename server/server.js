@@ -11,19 +11,28 @@ const authRoutes = require('./auth');
 const incidentRoutes = require('./incidents');
 const chatbotRoutes = require('./chatbot');
 const { runSlaChecks } = require("./slaMonitor");
+const { ensureWorkflowTables } = require('./workflowSupport');
 
 app.use(express.json());
 
 app.use('/auth', authRoutes);
 app.use('/incidents', incidentRoutes);
 app.use('/chatbot', chatbotRoutes);
-app.listen(8080, () => {
-    console.log('Server listening on port 8080');
-});
 const SLA_CHECK_INTERVAL = 60 * 1000;
 
-runSlaChecks(pool);
+async function startServer() {
+    try {
+        await ensureWorkflowTables(pool);
+    } catch (error) {
+        console.error('Workflow tables could not be initialized:', error.message);
+    }
 
-setInterval(() => {
+    app.listen(8080, () => {
+        console.log('Server listening on port 8080');
+    });
+
     runSlaChecks(pool);
-}, SLA_CHECK_INTERVAL);
+    setInterval(() => runSlaChecks(pool), SLA_CHECK_INTERVAL);
+}
+
+startServer();

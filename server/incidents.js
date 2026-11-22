@@ -12,6 +12,11 @@ const {
 const { suggestCategory } = require("./categorySuggester");
 const { suggestResolutions } = require("./resolutionSuggester");
 const { IncidentFactory, DomainValidationError } = require("./domain/Incident");
+const { calculatePriority } = require('./priority');
+const {
+    createWorkflowNotification,
+    findRelatedIncidents
+} = require('./workflowSupport');
 
 async function isTechnician(userId) {
     const result = await pool.query(
@@ -630,7 +635,7 @@ router.patch("/:id/acknowledge", authenticate, async (req, res) => {
             `UPDATE incidents
              SET status = 'ACKNOWLEDGED',
                  updated_at = NOW(),
-                 acknowledged_at = NOW(),
+                 acknowledged_at = NOW()
              WHERE incident_id = $1`,
             [req.params.id]
         );
@@ -927,10 +932,11 @@ router.patch("/:id/resolve", authenticate, async (req, res) => {
         await client.query(
             `UPDATE incidents
              SET status = 'RESOLVED',
+                resolution_details = $1,
                 resolved_at = NOW(),
                  updated_at = NOW()
-             WHERE incident_id = $1`,
-            [req.params.id]
+             WHERE incident_id = $2`,
+            [description.trim(), req.params.id]
         );
 
         await addActivity(
@@ -940,6 +946,14 @@ router.patch("/:id/resolve", authenticate, async (req, res) => {
             "RESOLUTION",
             description.trim()
         );
+
+        await createWorkflowNotification(client, {
+            userId: incident.reporter_id,
+            incidentId: incident.incident_id,
+            title: 'Incident resolved',
+            message: `The technician marked incident #${incident.incident_id} as resolved. Please review the resolution.`,
+            dedupeKey: `resolved:${incident.incident_id}`
+        });
 
         await client.query("COMMIT");
 
@@ -1184,26 +1198,7 @@ router.patch("/:id/classify", authenticate, async (req, res) => {
             });
         }
 
-        // Calculate priority
-        const priorityMatrix = {
-            HIGH: {
-                HIGH: "P1",
-                MEDIUM: "P2",
-                LOW: "P3"
-            },
-            MEDIUM: {
-                HIGH: "P2",
-                MEDIUM: "P3",
-                LOW: "P4"
-            },
-            LOW: {
-                HIGH: "P3",
-                MEDIUM: "P4",
-                LOW: "P4"
-            }
-        };
-
-        const priority = priorityMatrix[impact][urgency];
+        const priority = calculatePriority(impact, urgency);
 
         await client.query("BEGIN");
 
@@ -1478,6 +1473,21 @@ router.post("/:id/assign", authenticate, async (req, res) => {
                 `Incident assigned to technician ${technician.technician_id} using ${strategy} strategy`
             ]
         );
+
+        await createWorkflowNotification(client, {
+            userId: technician.technician_id,
+            incidentId,
+            title: 'Incident assigned to you',
+            message: `Incident #${incidentId}: ${incident.title}`,
+            dedupeKey: `assigned:${incidentId}:${technician.technician_id}`
+        });
+        await createWorkflowNotification(client, {
+            userId: incident.reporter_id,
+            incidentId,
+            title: 'Technician assigned',
+            message: `A technician has been assigned to incident #${incidentId}.`,
+            dedupeKey: `assignment-reporter:${incidentId}`
+        });
 
         await client.query("COMMIT");
 
@@ -2010,17 +2020,19 @@ router.get("/notifications", authenticate, async (req, res) => {
         const userId = req.user.user_id;
 
         const result = await pool.query(`
-            SELECT
-                n.notification_id,
-                n.incident_id,
-                n.event_id,
-                n.title,
-                n.message,
-                n.is_read,
-                n.created_at
-            FROM notifications n
-            WHERE n.user_id = $1
-            ORDER BY n.created_at DESC
+            SELECT notification_id, incident_id, event_id, title, message, is_read, created_at
+            FROM (
+                SELECT n.notification_id, n.incident_id, n.event_id,
+                       n.title, n.message, n.is_read, n.created_at
+                FROM notifications n
+                WHERE n.user_id = $1
+                UNION ALL
+                SELECT -n.notification_id AS notification_id, n.incident_id,
+                       NULL AS event_id, n.title, n.message, n.is_read, n.created_at
+                FROM workflow_notifications n
+                WHERE n.user_id = $1
+            ) all_notifications
+            ORDER BY created_at DESC
             LIMIT 50
         `, [userId]);
 
@@ -2039,15 +2051,24 @@ router.get("/notifications", authenticate, async (req, res) => {
 router.patch("/notifications/:id/read", authenticate, async (req, res) => {
     try {
         const userId = req.user.user_id;
-        const notificationId = req.params.id;
+        const notificationId = Number(req.params.id);
+        if (!Number.isSafeInteger(notificationId) || notificationId === 0) {
+            return res.status(400).json({ message: 'Invalid notification ID' });
+        }
 
-        const result = await pool.query(`
-            UPDATE notifications
-            SET is_read = TRUE
-            WHERE notification_id = $1
-              AND user_id = $2
-            RETURNING *
-        `, [notificationId, userId]);
+        const result = notificationId < 0
+            ? await pool.query(`
+                UPDATE workflow_notifications
+                SET is_read = TRUE
+                WHERE notification_id = $1 AND user_id = $2
+                RETURNING *
+            `, [Math.abs(notificationId), userId])
+            : await pool.query(`
+                UPDATE notifications
+                SET is_read = TRUE
+                WHERE notification_id = $1 AND user_id = $2
+                RETURNING *
+            `, [notificationId, userId]);
 
         if (result.rows.length === 0) {
             return res.status(404).json({
@@ -2674,6 +2695,58 @@ router.get("/:id/suggested-resolutions", authenticate, async (req, res) => {
     }
 });
 
+router.get("/:id/relations", authenticate, async (req, res) => {
+    try {
+        if (!(await isAdmin(req.user.user_id))) {
+            return res.status(403).json({ message: 'Admin access required' });
+        }
+        const incidentId = Number(req.params.id);
+        if (!Number.isInteger(incidentId) || incidentId <= 0) {
+            return res.status(400).json({ message: 'Invalid incident ID' });
+        }
+
+        const relatedResult = await pool.query(`
+            SELECT
+                CASE WHEN r.incident_id = $1 THEN r.related_incident_id ELSE r.incident_id END AS incident_id,
+                i.title,
+                i.status,
+                r.relationship_type,
+                ROUND(r.match_score * 100)::integer AS match_score
+            FROM incident_relationships r
+            JOIN incidents i
+              ON i.incident_id = CASE
+                    WHEN r.incident_id = $1 THEN r.related_incident_id
+                    ELSE r.incident_id
+                 END
+            WHERE r.incident_id = $1 OR r.related_incident_id = $1
+            ORDER BY r.match_score DESC, i.created_at DESC
+        `, [incidentId]);
+
+        const escalationResult = await pool.query(`
+            SELECT e.escalation_id,
+                   CASE WHEN e.incident_id = $1 THEN e.related_incident_id ELSE e.incident_id END AS related_incident_id,
+                   i.title AS related_title,
+                   e.reason, ROUND(e.match_score * 100)::integer AS match_score,
+                   e.created_at
+            FROM incident_escalations e
+            JOIN incidents i ON i.incident_id = CASE
+                WHEN e.incident_id = $1 THEN e.related_incident_id
+                ELSE e.incident_id
+            END
+            WHERE e.incident_id = $1 OR e.related_incident_id = $1
+            ORDER BY e.created_at DESC
+        `, [incidentId]);
+
+        res.json({
+            related_incidents: relatedResult.rows,
+            escalations: escalationResult.rows
+        });
+    } catch (err) {
+        console.error('RELATED INCIDENTS ERROR:', err);
+        res.status(500).json({ message: 'Unable to retrieve related incidents' });
+    }
+});
+
 router.get("/:id", authenticate, async (req, res) => {
     try {
         const incidentId = req.params.id;
@@ -2780,7 +2853,7 @@ router.post("/", authenticate, async (req, res) => {
 
         // Validate selected service
         const serviceResult = await pool.query(
-            `SELECT service_id, service_name
+            `SELECT service_id, service_name, category
              FROM services
              WHERE service_id = $1
              AND is_active = TRUE`,
@@ -2812,28 +2885,189 @@ router.post("/", authenticate, async (req, res) => {
         }
 
         const record = incident.toPersistenceRecord();
-
-        const result = await pool.query(
-            `INSERT INTO incidents
-                (reporter_id, title, description,
-                 service_id, affected_service, impact, urgency)
-             VALUES ($1, $2, $3, $4, $5, $6, $7)
-             RETURNING *`,
-            [
-                record.reporterId,
-                record.title,
-                record.description,
-                record.serviceId,
-                record.affectedService,
-                record.impact,
-                record.urgency
-            ]
-        );
-
-        return res.status(201).json({
-            message: "Incident reported successfully",
-            incident: result.rows[0]
+        const service = serviceResult.rows[0];
+        const priority = calculatePriority(record.impact, record.urgency);
+        const categorySuggestion = suggestCategory({
+            title: record.title,
+            description: record.description,
+            serviceCategory: service.category
         });
+        const category = categorySuggestion.category;
+        const slaResult = await pool.query(
+            `SELECT sla_id, response_time_minutes, resolution_time_minutes
+             FROM sla_config
+             WHERE priority = $1 AND is_active = TRUE
+             LIMIT 1`,
+            [priority]
+        );
+        const sla = slaResult.rows[0] || null;
+        const initialStatus = category && sla ? 'CLASSIFIED' : 'NEW';
+        const client = await pool.connect();
+
+        try {
+            await client.query('BEGIN');
+            const insertResult = await client.query(
+                `INSERT INTO incidents
+                    (reporter_id, title, description, service_id, affected_service,
+                     category, impact, urgency, priority, sla_id,
+                     response_due_at, resolution_due_at, status)
+                 VALUES ($1, $2, $3, $4, $5, $6, $7, $8, $9, $10,
+                    CASE WHEN $11::integer IS NULL THEN NULL
+                         ELSE NOW() + ($11 * INTERVAL '1 minute') END,
+                    CASE WHEN $12::integer IS NULL THEN NULL
+                         ELSE NOW() + ($12 * INTERVAL '1 minute') END,
+                    $13)
+                 RETURNING *`,
+                [
+                    record.reporterId,
+                    record.title,
+                    record.description,
+                    record.serviceId,
+                    record.affectedService,
+                    category,
+                    record.impact,
+                    record.urgency,
+                    priority,
+                    sla?.sla_id || null,
+                    sla?.response_time_minutes || null,
+                    sla?.resolution_time_minutes || null,
+                    initialStatus
+                ]
+            );
+            let createdIncident = insertResult.rows[0];
+
+            await addActivity(
+                client,
+                createdIncident.incident_id,
+                reporterId,
+                'STATUS_CHANGE',
+                `Incident reported. System assigned priority ${priority}${category ? ` and suggested category ${category}` : ''}.`
+            );
+            await createWorkflowNotification(client, {
+                userId: reporterId,
+                incidentId: createdIncident.incident_id,
+                title: 'Incident received',
+                message: `Your incident #${createdIncident.incident_id} was received with priority ${priority}.`,
+                dedupeKey: `reported:${createdIncident.incident_id}`
+            });
+
+            const relatedIncidents = await findRelatedIncidents(client, createdIncident);
+            const escalationList = [];
+            for (const related of relatedIncidents) {
+                const possibleDuplicate = related.same_service && related.score >= 0.72;
+                const lowId = Math.min(createdIncident.incident_id, related.incident_id);
+                const highId = Math.max(createdIncident.incident_id, related.incident_id);
+                await client.query(
+                    `INSERT INTO incident_relationships
+                        (incident_id, related_incident_id, relationship_type, match_score)
+                     VALUES ($1, $2, $3, $4)
+                     ON CONFLICT (incident_id, related_incident_id)
+                     DO UPDATE SET match_score = GREATEST(incident_relationships.match_score, EXCLUDED.match_score)`,
+                    [lowId, highId, possibleDuplicate ? 'POSSIBLE_DUPLICATE' : 'RELATED', related.score]
+                );
+
+                if (possibleDuplicate) {
+                    const escalationResult = await client.query(
+                        `INSERT INTO incident_escalations
+                            (incident_id, related_incident_id, reason, match_score)
+                         VALUES ($1, $2, $3, $4)
+                         ON CONFLICT (incident_id, related_incident_id) DO NOTHING
+                         RETURNING escalation_id`,
+                        [createdIncident.incident_id, related.incident_id,
+                            'High similarity to an active incident on the same service.', related.score]
+                    );
+                    if (escalationResult.rows.length) {
+                        escalationList.push(related);
+                        const admins = await client.query(
+                            `SELECT user_id FROM users WHERE role = 'ADMIN' AND is_active = TRUE`
+                        );
+                        for (const admin of admins.rows) {
+                            await createWorkflowNotification(client, {
+                                userId: admin.user_id,
+                                incidentId: createdIncident.incident_id,
+                                title: 'Possible duplicate incident escalated',
+                                message: `Incident #${createdIncident.incident_id} may duplicate incident #${related.incident_id} (${Math.round(related.score * 100)}% match). Review the related incidents.`,
+                                dedupeKey: `duplicate:${createdIncident.incident_id}:${related.incident_id}:${admin.user_id}`
+                            });
+                        }
+                    }
+                }
+            }
+
+            let assignedTechnician = null;
+            if (category && sla) {
+                await client.query('SAVEPOINT automatic_assignment');
+                try {
+                    const strategy = await getActiveStrategy(client);
+                    const technician = await selectTechnician(client, createdIncident, strategy);
+                    if (technician) {
+                        await client.query(
+                            `UPDATE incidents
+                             SET assigned_technician_id = $1, status = 'ASSIGNED', updated_at = NOW()
+                             WHERE incident_id = $2`,
+                            [technician.technician_id, createdIncident.incident_id]
+                        );
+                        await client.query(
+                            `INSERT INTO incident_assignments
+                                (incident_id, technician_id, strategy_used, assigned_by)
+                             VALUES ($1, $2, $3, $4)`,
+                            [createdIncident.incident_id, technician.technician_id, strategy, reporterId]
+                        );
+                        await addActivity(
+                            client,
+                            createdIncident.incident_id,
+                            reporterId,
+                            'STATUS_CHANGE',
+                            `Automatically assigned to technician ${technician.technician_id} using ${strategy}.`
+                        );
+                        await createWorkflowNotification(client, {
+                            userId: technician.technician_id,
+                            incidentId: createdIncident.incident_id,
+                            title: 'Incident assigned to you',
+                            message: `Incident #${createdIncident.incident_id}: ${createdIncident.title}`,
+                            dedupeKey: `assigned:${createdIncident.incident_id}:${technician.technician_id}`
+                        });
+                        await createWorkflowNotification(client, {
+                            userId: reporterId,
+                            incidentId: createdIncident.incident_id,
+                            title: 'Technician assigned',
+                            message: `A technician has been assigned to incident #${createdIncident.incident_id}.`,
+                            dedupeKey: `assignment-reporter:${createdIncident.incident_id}`
+                        });
+                    }
+                    await client.query('RELEASE SAVEPOINT automatic_assignment');
+                } catch (assignmentError) {
+                    await client.query('ROLLBACK TO SAVEPOINT automatic_assignment');
+                    await client.query('RELEASE SAVEPOINT automatic_assignment');
+                    console.error('Automatic assignment skipped:', assignmentError.message);
+                }
+            }
+
+            const finalIncident = await client.query(
+                `SELECT * FROM incidents WHERE incident_id = $1`,
+                [createdIncident.incident_id]
+            );
+            createdIncident = finalIncident.rows[0];
+            await client.query('COMMIT');
+
+            return res.status(201).json({
+                message: 'Incident reported successfully',
+                incident: createdIncident,
+                related_incidents: relatedIncidents.map(item => ({
+                    incident_id: item.incident_id,
+                    title: item.title,
+                    match_score: Math.round(item.score * 100),
+                    possible_duplicate: item.same_service && item.score >= 0.72
+                })),
+                escalated: escalationList.length > 0,
+                assignment_pending: !createdIncident.assigned_technician_id
+            });
+        } catch (error) {
+            await client.query('ROLLBACK');
+            throw error;
+        } finally {
+            client.release();
+        }
 
     } catch (err) {
         console.error(err);

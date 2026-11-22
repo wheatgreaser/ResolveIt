@@ -57,7 +57,7 @@ function Chatbot() {
     return (
         <div className="chatbotRoot">
             {open && (
-                <section className="chatbotPanel" aria-label="ResolveIt AI assistant">
+                <section className="chatbotPanel" aria-label="ResolveIt IT support assistant">
                     <header className="chatbotHeader">
                         <div className="chatbotAvatar">✦</div>
                         <div><strong>ResolveIt Assistant</strong><span>IT support, whenever you need it</span></div>
@@ -91,7 +91,7 @@ function Chatbot() {
                         />
                         <button type="submit" disabled={sending || !input.trim()} aria-label="Send message">↑</button>
                     </form>
-                    <p className="chatbotHint">AI can make mistakes. Never share passwords or codes.</p>
+                    <p className="chatbotHint">Basic support tips only. Never share passwords or codes.</p>
                 </section>
             )}
             <button className="chatbotLauncher" onClick={() => setOpen(value => !value)} aria-label={open ? "Close support chat" : "Open support chat"}>

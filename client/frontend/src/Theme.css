@@ -75,7 +75,7 @@ body {
   .actionCard, .welcomeSection, .workflowItem, .strategyCard,
   .suggestionCard,
   .classificationCard, .investigationHeader, .investigationSection,
-  .track-card, .slaTableSection, .slaConfigCard, .reportCard,
+  .track-card, .incidentForm, .slaTableSection, .slaConfigCard, .reportCard,
   .reportPanel, .serviceSummaryCard, .technicianSummaryCard,
   .userModal, .technicianModal, .serviceModal, .adminIncidentList,
   .adminIncidentDetails, .technicianCard, .unassignedCard,
@@ -275,4 +275,259 @@ table tbody tr:hover { background: #f4f0e7 !important; }
 .loginStory h2 {
   color: #fbf8ee !important;
   -webkit-text-fill-color: #fbf8ee !important;
+}
+
+.incidentForm {
+  border-color: #d8dfd3 !important;
+  background: #fffdf8 !important;
+  background-image: none !important;
+  box-shadow: 0 18px 48px rgba(34, 51, 39, .1) !important;
+}
+
+.triageCard {
+  border-color: #d8dfd3 !important;
+  background: #f1eee5 !important;
+  background-image: none !important;
+}
+
+.triageSuggestion {
+  border: 1px solid #d8dfd3 !important;
+  background: #fffdf8 !important;
+  background-image: none !important;
+}
+
+/* Final contrast pass: neutralize leftover page-specific blue surfaces. */
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen
+) * {
+  color: #25483b !important;
+  border-color: #d8dfd3 !important;
+  background-color: transparent !important;
+  background-image: none !important;
+  box-shadow: none;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen
+) :where(
+  .dashboardHeader, .incidentHeader, .myIncidentsHeader, .track-header,
+  .assignmentHeader, .classificationHeader, .slaHeader, .slaConfigHeader,
+  .adminReportsHeader, .manageUsersHeader, .manageTechniciansHeader,
+  .manageServicesHeader, .adminIncidentHeader
+) {
+  background: #f4f0e7 !important;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen
+) :where(
+  .loginCo, .registerCo, .incidentForm, .actionCard, .welcomeSection,
+  .dashboardSection, .workflowSection, .workflowItem, .assignmentSection,
+  .strategyCard, .technicianCard, .unassignedCard, .classificationCard,
+  .investigationHeader, .investigationSection, .track-card,
+  .adminIncidentList, .adminIncidentDetails, .adminIncidentItem,
+  .detailsBlock, .slaStatCard, .slaTableSection, .slaConfigCard,
+  .reportCard, .reportPanel, .serviceSummaryCard, .technicianSummaryCard,
+  .usersTableContainer, .emptyAssignment, .emptyClassification,
+  .emptyIncidents, .emptyTechnician, .adminIncidentEmpty, .servicesEmpty,
+  .techniciansEmpty, .usersEmpty, .reportEmpty, .slaEmpty, .slaConfigEmpty
+) {
+  border-color: #d8dfd3 !important;
+  background: #fffdf8 !important;
+  background-image: none !important;
+  box-shadow: 0 10px 28px rgba(34, 51, 39, .07) !important;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen, .chatbotRoot
+) button:not(.chatbotClose) {
+  border-color: #245744 !important;
+  color: #fffdf8 !important;
+  background: #245744 !important;
+  background-image: none !important;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen, .chatbotRoot
+) :where(input, select, textarea) {
+  border: 1px solid #cbd5c8 !important;
+  color: #183c32 !important;
+  background: #f8f7f1 !important;
+  background-image: none !important;
+  box-shadow: none !important;
+}
+
+:where(
+  .dashboardScreen, .incidentScreen, .myIncidentsScreen, .track-page,
+  .assignmentPage, .classificationPage, .technicianIncidentPage,
+  .adminIncidentPage, .slaPage, .slaConfigPage, .adminReportsScreen,
+  .manageUsersPage, .manageTechniciansPage, .manageServicesPage,
+  .registerScreen
+) :where(.triageCard, .userModalOverlay, .technicianModalOverlay, .serviceModalOverlay) {
+  border-color: #d8dfd3 !important;
+  background: #f1eee5 !important;
+  background-image: none !important;
+}
+
+:where(.loginScreen, .registerScreen) .heading,
+:where(.loginScreen, .registerScreen) .registerHeading {
+  color: #183c32 !important;
+  background: none !important;
+  -webkit-text-fill-color: #183c32 !important;
+}
+
+:where(.loginScreen, .registerScreen) .loginStory h2 {
+  color: #fbf8ee !important;
+  -webkit-text-fill-color: #fbf8ee !important;
+}
+
+/* Keep the assistant and dashboard cards high contrast. */
+.chatbotRoot .chatbotLauncher,
+.chatbotRoot .chatbotLauncher span {
+  color: #fffdf8 !important;
+  background: #245744 !important;
+  background-image: none !important;
+}
+
+.chatbotRoot .chatbotPanel {
+  border: 1px solid #cbd5c8 !important;
+  color: #183c32 !important;
+  background: #fffdf8 !important;
+  box-shadow: 0 18px 48px rgba(34, 51, 39, .18) !important;
+}
+
+.chatbotRoot .chatbotHeader,
+.chatbotRoot .chatbotMessages,
+.chatbotRoot .chatbotForm {
+  border-color: #d8dfd3 !important;
+  color: #183c32 !important;
+  background: #f4f0e7 !important;
+  background-image: none !important;
+}
+
+.chatbotRoot .chatbotHeader strong,
+.chatbotRoot .chatbotHeader span,
+.chatbotRoot .chatbotClose,
+.chatbotRoot .chatbotHint {
+  color: #435d51 !important;
+}
+
+.chatbotRoot .chatMessage.assistant {
+  border: 1px solid #d8dfd3 !important;
+  color: #183c32 !important;
+  background: #fffdf8 !important;
+}
+
+.chatbotRoot .chatMessage.user {
+  color: #fffdf8 !important;
+  background: #245744 !important;
+}
+
+.chatbotRoot .chatbotError {
+  color: #8f3027 !important;
+}
+
+.dashboardScreen .actionCard,
+.dashboardScreen .reportCard {
+  border: 1px solid #cbd5c8 !important;
+  color: #183c32 !important;
+  background: #fffdf8 !important;
+  box-shadow: 0 8px 22px rgba(34, 51, 39, .07) !important;
+}
+
+.dashboardScreen .actionCard h3,
+.dashboardScreen .reportCard h3 {
+  color: #183c32 !important;
+}
+
+.dashboardScreen .actionCard p,
+.dashboardScreen .reportCard p {
+  color: #435d51 !important;
+}
+
+.dashboardScreen .actionCard .cardLink,
+.dashboardScreen .reportCard .cardLink {
+  color: #934326 !important;
+}
+
+.dashboardScreen .actionCard .actionIcon {
+  border-color: #b7c8b7 !important;
+  color: #183c32 !important;
+  background: #e8eee5 !important;
+}
+
+.dashboardScreen .actionCard:hover {
+  border-color: #78917d !important;
+  background: #f8f7f1 !important;
+}
+
+.dashboardScreen .actionCard::after {
+  display: none !important;
+}
+
+:where(.reportSummaryGrid, .reportChartsGrid, .slaStats,
+  .serviceSummary, .technicianSummary) > * {
+  border-color: #cbd5c8 !important;
+  color: #183c32 !important;
+  background: #fffdf8 !important;
+  background-image: none !important;
+}
+
+:where(.reportSummaryGrid, .reportChartsGrid, .slaStats,
+  .serviceSummary, .technicianSummary) :where(h2, h3, strong, p, span, small) {
+  color: #25483b !important;
+}
+
+.adminIncidentPage .clearIncidentFilters {
+  border: 0 !important;
+  color: #934326 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+/* These summary cards also have a legacy !important dark gradient. */
+.manageServicesPage .serviceSummaryCard,
+.manageTechniciansPage .technicianSummaryCard,
+.slaPage .slaStatCard,
+.adminReportsScreen .reportCard {
+  border: 1px solid #cbd5c8 !important;
+  color: #183c32 !important;
+  background: #fffdf8 !important;
+  background-image: none !important;
+  box-shadow: 0 10px 28px rgba(34, 51, 39, .08) !important;
+}
+
+.manageServicesPage .serviceSummaryCard span,
+.manageTechniciansPage .technicianSummaryCard span,
+.slaPage .slaStatCard span,
+.adminReportsScreen .reportCard p {
+  color: #435d51 !important;
+}
+
+.manageServicesPage .serviceSummaryCard strong,
+.manageTechniciansPage .technicianSummaryCard strong,
+.slaPage .slaStatCard strong,
+.adminReportsScreen .reportCard h2 {
+  color: #183c32 !important;
+  -webkit-text-fill-color: #183c32 !important;
 }

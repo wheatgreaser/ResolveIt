@@ -153,7 +153,7 @@ setResolutionSuggestions(suggestionData.suggestions || []);
         if (!resolution.trim()) return;
 
         await performAction("resolve", "PATCH", {
-            resolution_details: resolution
+            description: resolution
         });
 
         setResolution("");

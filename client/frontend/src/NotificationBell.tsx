@@ -6,7 +6,7 @@ import "./NotificationBell.css";
 interface Notification {
     notification_id: number;
     incident_id: number;
-    event_id: number;
+    event_id: number | null;
     title: string;
     message: string;
     is_read: boolean;
